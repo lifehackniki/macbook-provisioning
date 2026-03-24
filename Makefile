@@ -1,4 +1,5 @@
 PWD := $(shell pwd)
+HOSTNAME := $(shell hostname -s)
 
 .PHONY: link unlink link/home link/config copy/claude setup package/install package/cleanup package/check package/dump yazi/install npm/install
 
@@ -8,7 +9,7 @@ link/home:
 	ln -Fs $(PWD)/zsh/zshrc $(HOME)/.zshrc
 	ln -Fs $(PWD)/git/gitconfig $(HOME)/.gitconfig
 	ln -Fs $(PWD)/vim/vimrc $(HOME)/.vimrc
-	ln -Fs $(PWD)/aerospace/aerospace.toml $(HOME)/.aerospace.toml
+	ln -Fs $(PWD)/aerospace/aerospace.$(HOSTNAME).toml $(HOME)/.aerospace.toml
 	mkdir -p $(HOME)/bin
 	ln -Fs $(PWD)/bin/takt $(HOME)/bin/takt
 	ln -Fs $(PWD)/bin/mdview $(HOME)/bin/mdview

@@ -1,33 +1,28 @@
 tap "1password/tap" # 1Passwordの公式パッケージ
 tap "argon/mas" # Mac App Store CLIの公式パッケージ
 tap "FelixKratz/formulae" # JankyBorders等のツール
-tap "heroku/brew" # Herokuの公式パッケージ
 tap "homebrew/bundle" # Brewfileを使用したパッケージ管理
-tap "k1LoW/tap" # git-wt等のツール
 tap "homebrew/services" # バックグラウンドサービス管理
 tap "ngrok/ngrok" # ngrokの公式パッケージ
-tap "rcmdnk/file" # brew-fileなどのツール
 tap "nikitabobko/tap" # AeroSpaceタイリングウィンドウマネージャー
 tap "steipete/tap" # gogcli等のツール
+tap "manaflow-ai/cmux" # cmux AIターミナルマルチプレクサ
 tap "stripe/stripe-cli" # Stripe CLIツール
 
 # Formulae
 brew "asdf" # 複数の言語のバージョン管理ツール
 brew "automake" # Makefileの自動生成ツール
-brew "blackhole-2ch" # 画面収録用ツール
 brew "FelixKratz/formulae/borders" # ウィンドウにボーダーを追加するツール
-brew "brew-file" # Brewfileの管理ツール
 brew "cmake" # クロスプラットフォームビルドツール
 brew "coreutils" # GNU基本コマンドラインツール
 brew "curl" # URLデータ転送ツール
 brew "ffmpeg" # 動画・音声処理ツール
 brew "fzf" # コマンドラインファジーファインダー
 brew "gh" # GitHub CLI
+brew "git-delta" # gitの差分表示ツール
 brew "glow" # ターミナルMarkdownレンダラー
-brew "gogcli" # App Store等のアプリ情報取得ツール
+brew "gws" # Google Workspace CLI
 brew "ghq" # リモートリポジトリ管理ツール
-brew "git-wt" # Git worktree管理ツール
-brew "heroku" # HerokuのCLIツール
 brew "imagemagick" # 画像処理ツール
 brew "jq" # JSONプロセッサ
 brew "libpq" # PostgreSQLクライアントライブラリ
@@ -77,10 +72,8 @@ cask "dropbox" # クラウドストレージ
 cask "ghostty" # 高速ターミナルエミュレータ
 cask "google-japanese-ime" # 日本語入力メソッド
 cask "grandperspective" # ディスク使用量視覚化
-cask "gyazo" # スクリーンショット共有
 cask "karabiner-elements" # キーボードカスタマイズ
 cask "libreoffice" # オフィススイート（DOCX/XLSX/PPTX変換用）
-cask "limitless" # AIミーティングアシスタント
 cask "localsend" # ローカルネットワークファイル共有
 cask "microsoft-teams" # Microsoftのビジネスコミュニケーションプラットフォーム
 cask "ngrok" # ローカル環境の公開
@@ -91,6 +84,7 @@ cask "raycast" # ランチャー・生産性向上ツール
 cask "slack" # ビジネスチャット
 cask "the-unarchiver" # 圧縮ファイル解凍ツール
 cask "visual-studio-code" # コードエディタ
+cask "cmux" # AIターミナルマルチプレクサ
 cask "zoom" # ビデオ会議ツール
 
 # Mac App Store
@@ -109,7 +103,6 @@ vscode "anthropic.claude-code" # Claude Code
 vscode "bierner.markdown-mermaid" # Mermaid図表のプレビュー
 vscode "biomejs.biome" # Biomeリンター/フォーマッター
 vscode "bpruitt-goddard.mermaid-markdown-syntax-highlighting" # Mermaidシンタックスハイライト
-vscode "cognition.devin" # Devin AI
 vscode "dbaeumer.vscode-eslint" # JavaScriptリンター
 vscode "esbenp.prettier-vscode" # コードフォーマッター
 vscode "ionutvmi.path-autocomplete" # パス補完

@@ -1,4 +1,5 @@
-# AeroSpace 設定（フローティングモード）
+# AeroSpace 設定 - Mac mini（3モニター構成）
+# 上: DELL U3419W (メイン) / 左下: U13ZT / 右下: U13ZT
 # https://nikitabobko.github.io/AeroSpace/guide
 
 start-at-login = true
@@ -13,7 +14,12 @@ run = 'layout floating'
 [key-mapping]
 preset = 'qwerty'
 
-# gapsはフローティングモードでは不要
+# ワークスペースをモニターに固定
+# 1=上(DELL), 2=左下(U13ZT), 3=右下(U13ZT)
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'left'
+3 = 'right'
 
 [mode.main.binding]
 # ワークスペース切り替え (alt + 数字)
@@ -41,3 +47,16 @@ alt-shift-down = 'move-node-to-monitor down'
 # レイアウト切り替え
 alt-shift-t = 'layout tiling'
 alt-shift-f = 'layout floating'
+
+# ウィンドウ操作
+cmd-alt-left = 'exec-and-forget aerospace layout floating && aerospace move left'
+cmd-alt-right = 'exec-and-forget aerospace layout floating && aerospace move right'
+
+# アプリ起動 (ctrl + キー)
+ctrl-g = 'exec-and-forget open -a "Google Chrome Canary"'
+ctrl-q = 'exec-and-forget open -a "Biscuit"'
+ctrl-i = 'exec-and-forget open -a "cmux"'
+ctrl-z = 'exec-and-forget open -a "Calendar"'
+ctrl-m = 'exec-and-forget open -a "Claude"'
+ctrl-y = 'exec-and-forget open -a "Cursor"'
+ctrl-x = 'exec-and-forget open -a "Notion"'

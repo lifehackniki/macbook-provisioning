@@ -1,0 +1,54 @@
+# AeroSpace 設定 - MacBook Air（シングル/可変モニター構成）
+# https://nikitabobko.github.io/AeroSpace/guide
+
+start-at-login = true
+
+# 新規ウィンドウはフローティングで開く
+after-startup-command = ['exec-and-forget sleep 1 && aerospace list-windows --all | while read id rest; do aerospace layout --window-id $id floating; done || true']
+
+# 全てのアプリをフローティングで開く
+[[on-window-detected]]
+run = 'layout floating'
+
+[key-mapping]
+preset = 'qwerty'
+
+[mode.main.binding]
+# ワークスペース切り替え (alt + 数字)
+alt-1 = 'workspace 1'
+alt-2 = 'workspace 2'
+alt-3 = 'workspace 3'
+
+# ウィンドウをワークスペースに移動 (alt + shift + 数字)
+alt-shift-1 = 'move-node-to-workspace 1'
+alt-shift-2 = 'move-node-to-workspace 2'
+alt-shift-3 = 'move-node-to-workspace 3'
+
+# モニター間フォーカス移動 (alt + 方向キー)
+alt-left = 'focus-monitor left'
+alt-right = 'focus-monitor right'
+alt-up = 'focus-monitor up'
+alt-down = 'focus-monitor down'
+
+# モニター間ウィンドウ移動 (alt + shift + 方向キー)
+alt-shift-left = 'move-node-to-monitor left'
+alt-shift-right = 'move-node-to-monitor right'
+alt-shift-up = 'move-node-to-monitor up'
+alt-shift-down = 'move-node-to-monitor down'
+
+# レイアウト切り替え
+alt-shift-t = 'layout tiling'
+alt-shift-f = 'layout floating'
+
+# ウィンドウ操作
+cmd-alt-left = 'exec-and-forget aerospace layout floating && aerospace move left'
+cmd-alt-right = 'exec-and-forget aerospace layout floating && aerospace move right'
+
+# アプリ起動 (ctrl + キー)
+ctrl-g = 'exec-and-forget open -a "Google Chrome Canary"'
+ctrl-q = 'exec-and-forget open -a "Biscuit"'
+ctrl-i = 'exec-and-forget open -a "cmux"'
+ctrl-z = 'exec-and-forget open -a "Calendar"'
+ctrl-m = 'exec-and-forget open -a "Claude"'
+ctrl-y = 'exec-and-forget open -a "Cursor"'
+ctrl-x = 'exec-and-forget open -a "Notion"'
