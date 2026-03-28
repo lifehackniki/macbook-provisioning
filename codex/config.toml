@@ -5,7 +5,7 @@ model = "gpt-5.4"
 model_provider = "openai"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
-model_reasoning_effort = "high"
+model_reasoning_effort = "middle"
 web_search = "cached"
 
 [history]
