@@ -14,6 +14,7 @@ brew "asdf" # 複数の言語のバージョン管理ツール
 brew "automake" # Makefileの自動生成ツール
 brew "FelixKratz/formulae/borders" # ウィンドウにボーダーを追加するツール
 brew "cmake" # クロスプラットフォームビルドツール
+brew "codex" # OpenAI Codex CLIツール
 brew "coreutils" # GNU基本コマンドラインツール
 brew "curl" # URLデータ転送ツール
 brew "ffmpeg" # 動画・音声処理ツール
