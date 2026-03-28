@@ -156,6 +156,8 @@ alias y='yazi'
 alias gp='git add -A && expect -c '"'"'spawn aicommits -a; expect "Yes"; send "\r"; expect eof'"'"' && git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias c='claude --dangerously-skip-permissions'
 alias cr='claude -r --fork-session --dangerously-skip-permissions'
+alias cx='codex'
+alias cxr='codex resume'
 
 function chpwd() { ls }
 
