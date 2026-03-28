@@ -75,7 +75,12 @@ cask "google-japanese-ime" # 日本語入力メソッド
 cask "grandperspective" # ディスク使用量視覚化
 cask "karabiner-elements" # キーボードカスタマイズ
 cask "libreoffice" # オフィススイート（DOCX/XLSX/PPTX変換用）
+<<<<<<< Updated upstream
 cask "localsend" # ローカルネットワークファイル共有
+||||||| Stash base
+cask "limitless" # AIミーティングアシスタント
+=======
+>>>>>>> Stashed changes
 cask "microsoft-teams" # Microsoftのビジネスコミュニケーションプラットフォーム
 cask "ngrok" # ローカル環境の公開
 cask "notion" # ノートアプリ

@@ -16,6 +16,8 @@ link/home:
 	ln -Fs $(PWD)/tmux/tmux.conf $(HOME)/.tmux.conf
 
 link/config:
+	mkdir -p $(HOME)/.codex
+	ln -Fs $(PWD)/codex/config.toml $(HOME)/.codex/config.toml
 	mkdir -p $(HOME)/.config/ghostty
 	ln -Fs $(PWD)/ghostty/config $(HOME)/.config/ghostty/config
 	mkdir -p $(HOME)/.config/borders
@@ -45,6 +47,7 @@ unlink:
 	rm -f $(HOME)/.config/karabiner/karabiner.json
 	rm -f $(HOME)/.config/peco/config.json
 	rm -rf $(HOME)/.config/yazi
+	rm -f $(HOME)/.codex/config.toml
 	rm -f $(HOME)/.claude/CLAUDE.md $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/notify.sh
 	rm -rf $(HOME)/.claude/agents
 
