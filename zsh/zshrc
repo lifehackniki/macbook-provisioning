@@ -7,8 +7,8 @@ export PATH="$HOME/.local/bin:/opt/homebrew/bin:$PATH"
 
 # ls 時の色を設定する
 export CLICOLOR=true
-export LSCOLORS='exfxcxdxbxGxDxabagacad'
-export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=36;01:cd=33;01:su=31;40;07:sg=36;40;07:tw=32;40;07:ow=33;40;07:'
+export LSCOLORS='gxfxbEaEBxxEhEhBaDaCaD'
+export LS_COLORS='di=36:ln=35:so=31;1;44:pi=30;1;44:ex=1;31:bd=0;1;44:cd=37;1;44:su=37;1;41:sg=30;1;43:tw=30;1;42:ow=36;1;42:'
 
 # disable CLAUDE_CODE_TIPS 
 export DISABLE_NON_ESSENTIAL_MODEL_CALLS=1
