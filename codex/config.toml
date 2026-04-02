@@ -1,12 +1,15 @@
-# Codex CLI Configuration
-# full-auto preset: no approval prompts, full sandbox access
-
 model = "gpt-5.4"
-model_provider = "openai"
-approval_policy = "never"
-sandbox_mode = "danger-full-access"
-model_reasoning_effort = "middle"
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+model_reasoning_effort = "medium"
 web_search = "cached"
 
 [history]
 persistence = "save-all"
+
+[tui]
+status_line = ["model-with-reasoning", "used-tokens", "five-hour-limit", "weekly-limit", "current-dir"]
+notifications = ["agent-turn-complete","approval-requested"]
+
+[projects."/Users/niki/ghq/github.com/co-cre/kajinuma-os"]
+trust_level = "trusted"
