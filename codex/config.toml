@@ -13,3 +13,6 @@ notifications = ["agent-turn-complete","approval-requested"]
 
 [projects."/Users/niki/ghq/github.com/co-cre/kajinuma-os"]
 trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/kajinuma-os"]
+trust_level = "trusted"
