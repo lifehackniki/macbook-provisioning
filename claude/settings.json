@@ -28,5 +28,8 @@
     "code-simplifier@claude-plugins-official": true
   },
   "spinnerTipsEnabled": false,
-  "skipDangerousModePermissionPrompt": true
+  "skipDangerousModePermissionPrompt": true,
+  "showThinkingSummaries": true,
+  "alwaysThinkingEnabled": true,
+  "language": "japanese"
 }

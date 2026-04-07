@@ -59,7 +59,6 @@ cask "aerospace" # タイリングウィンドウマネージャー
 cask "alt-tab" # Windowsライクなアプリケーション切り替え
 cask "antigravity" # Antigravity
 cask "appcleaner" # アプリケーション完全削除ツール
-cask "arc" # 革新的なWebブラウザ
 cask "bartender" # メニューバー整理ツール
 cask "battery" # Apple Silicon Mac用バッテリー管理アプリ
 cask "bettertouchtool" # マウス・キーボードカスタマイズ
@@ -75,13 +74,7 @@ cask "google-japanese-ime" # 日本語入力メソッド
 cask "grandperspective" # ディスク使用量視覚化
 cask "karabiner-elements" # キーボードカスタマイズ
 cask "libreoffice" # オフィススイート（DOCX/XLSX/PPTX変換用）
-<<<<<<< Updated upstream
 cask "localsend" # ローカルネットワークファイル共有
-||||||| Stash base
-cask "limitless" # AIミーティングアシスタント
-=======
->>>>>>> Stashed changes
-cask "microsoft-teams" # Microsoftのビジネスコミュニケーションプラットフォーム
 cask "ngrok" # ローカル環境の公開
 cask "notion" # ノートアプリ
 cask "obsidian" # Markdownノートアプリ
@@ -89,20 +82,15 @@ cask "orbstack" # 軽量コンテナ・VM管理
 cask "raycast" # ランチャー・生産性向上ツール
 cask "slack" # ビジネスチャット
 cask "the-unarchiver" # 圧縮ファイル解凍ツール
-cask "visual-studio-code" # コードエディタ
 cask "cmux" # AIターミナルマルチプレクサ
 cask "zoom" # ビデオ会議ツール
 
 # Mac App Store
 mas "Amphetamine", id: 937984704 # スリープ防止ツール
 mas "Day One", id: 1055511498 # 日記アプリ
-mas "Keynote", id: 409183694 # プレゼンテーションツール
 mas "iMovie", id: 408981434 # 動画編集ソフト
 mas "LINE", id: 539883307 # メッセージングアプリ
-mas "Numbers", id: 409203825 # スプレッドシートアプリ
-mas "Pages", id: 409201541 # ワードプロセッサ
 mas "Prime Video", id: 545519333 # Amazonビデオストリーミング
-mas "Todoist", id: 585829637 # タスク管理アプリ
 
 # VSCode/Cursor Extensions
 vscode "anthropic.claude-code" # Claude Code

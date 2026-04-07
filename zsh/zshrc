@@ -199,3 +199,6 @@ alias claude-mem='bun "/Users/tsubasa/.claude/plugins/marketplaces/thedotmack/pl
 
 # Added by Antigravity
 export PATH="/Users/tsubasa/.antigravity/antigravity/bin:$PATH"
+
+# Added by Antigravity
+export PATH="/Users/niki/.antigravity/antigravity/bin:$PATH"
