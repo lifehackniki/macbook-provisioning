@@ -14,6 +14,18 @@ on   = [ "m", "d" ]
 run  = "shell 'mdview -p $0' --block"
 desc = "mdviewでMarkdownプレビュー"
 
+# Finderで開く
+[[mgr.prepend_keymap]]
+on   = [ "g", "f" ]
+run  = "shell 'open -R $0' --orphan"
+desc = "Finderで表示"
+
+# デフォルトブラウザで開く
+[[mgr.prepend_keymap]]
+on   = [ "g", "b" ]
+run  = "shell 'open $0' --orphan"
+desc = "ブラウザで開く"
+
 # ファイル/ディレクトリのパスをクリップボードにコピー
 #（デフォルトはc->c,でファイル、c->dでディレクトリになっており、コマンド別れるのが嫌だったので）
 [[mgr.prepend_keymap]]
