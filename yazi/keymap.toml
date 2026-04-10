@@ -16,13 +16,13 @@ desc = "mdviewでMarkdownプレビュー"
 
 # Finderで開く
 [[mgr.prepend_keymap]]
-on   = [ "g", "f" ]
+on   = [ "o", "f" ]
 run  = "shell 'open -R $0' --orphan"
 desc = "Finderで表示"
 
 # デフォルトブラウザで開く
 [[mgr.prepend_keymap]]
-on   = [ "g", "b" ]
+on   = [ "o", "b" ]
 run  = "shell 'open $0' --orphan"
 desc = "ブラウザで開く"
 
