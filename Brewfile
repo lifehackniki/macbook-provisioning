@@ -32,6 +32,7 @@ brew "lv" # 多機能テキストビューア
 brew "marp-cli" # Markdownプレゼンテーションツール
 brew "mas" # Mac App Store CLIツール
 brew "nkf" # 文字コード変換ツール
+brew "ollama" # ローカルLLM実行ツール
 brew "openjdk" # Java開発キット
 brew "pandoc" # ドキュメント変換ツール
 brew "peco" # インタラクティブフィルタリングツール
