@@ -9,7 +9,6 @@ link/home:
 	ln -Fs $(PWD)/zsh/zshrc $(HOME)/.zshrc
 	ln -Fs $(PWD)/git/gitconfig $(HOME)/.gitconfig
 	ln -Fs $(PWD)/vim/vimrc $(HOME)/.vimrc
-	ln -Fs $(PWD)/aerospace/aerospace.$(HOSTNAME).toml $(HOME)/.aerospace.toml
 	mkdir -p $(HOME)/bin
 	ln -Fs $(PWD)/bin/takt $(HOME)/bin/takt
 	ln -Fs $(PWD)/bin/mdview $(HOME)/bin/mdview
@@ -39,7 +38,7 @@ copy/claude:
 	rsync -a --delete --exclude='skills/' --exclude='projects/' --exclude='memory/' --exclude='teams/' --exclude='tasks/' --exclude='todos/' --exclude='.credentials' --exclude='statsig/' $(PWD)/claude/ $(HOME)/.claude/
 
 unlink:
-	rm -f $(HOME)/.zshrc $(HOME)/.gitconfig $(HOME)/.vimrc $(HOME)/.aerospace.toml
+	rm -f $(HOME)/.zshrc $(HOME)/.gitconfig $(HOME)/.vimrc
 	rm -f $(HOME)/bin/takt
 	rm -f $(HOME)/.tmux.conf
 	rm -f $(HOME)/.config/ghostty/config

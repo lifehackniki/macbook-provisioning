@@ -40,7 +40,7 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/lifehackniki/macbook-pro
 | コマンド | 説明 |
 |---|---|
 | `make link` | 全設定をリンク（下記すべて実行） |
-| `make link/home` | `~/` 直下にリンク（zshrc, gitconfig, vimrc, aerospace.toml, tmux.conf, bin/） |
+| `make link/home` | `~/` 直下にリンク（zshrc, gitconfig, vimrc, tmux.conf, bin/） |
 | `make link/config` | `~/.config/` 配下にリンク（ghostty, borders, karabiner, peco, yazi, lazygit） |
 | `make copy/claude` | `~/.claude/` へ設定をコピー |
 | `make unlink` | リンク解除 |
@@ -63,7 +63,6 @@ bash macos/defaults.sh  # macOS のシステム設定を適用（要再起動）
 ├── vim/                  # ~/.vimrc
 ├── tmux/                 # ~/.tmux.conf
 ├── ghostty/              # ~/.config/ghostty/config
-├── aerospace/            # ~/.aerospace.toml
 ├── borders/              # ~/.config/borders/bordersrc
 ├── karabiner/            # ~/.config/karabiner/karabiner.json
 ├── peco/                 # ~/.config/peco/config.json

@@ -4,7 +4,6 @@ tap "FelixKratz/formulae" # JankyBorders等のツール
 tap "homebrew/bundle" # Brewfileを使用したパッケージ管理
 tap "homebrew/services" # バックグラウンドサービス管理
 tap "ngrok/ngrok" # ngrokの公式パッケージ
-tap "nikitabobko/tap" # AeroSpaceタイリングウィンドウマネージャー
 tap "steipete/tap" # gogcli等のツール
 tap "manaflow-ai/cmux" # cmux AIターミナルマルチプレクサ
 tap "stripe/stripe-cli" # Stripe CLIツール
@@ -56,7 +55,6 @@ brew "zsh" # Zシェル
 # Casks
 cask "font-symbols-only-nerd-font" # Nerd Fontシンボルフォント
 cask "1password" # パスワードマネージャー
-cask "aerospace" # タイリングウィンドウマネージャー
 cask "alt-tab" # Windowsライクなアプリケーション切り替え
 cask "antigravity" # Antigravity
 cask "appcleaner" # アプリケーション完全削除ツール

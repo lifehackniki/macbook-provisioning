@@ -27,7 +27,7 @@ make package/cleanup    # 不要パッケージ削除
 ### 設定ファイルのリンク
 ```bash
 make link               # 全設定をリンク
-make link/home          # ~/直下にリンク（zshrc, gitconfig, vimrc, aerospace.toml）
+make link/home          # ~/直下にリンク（zshrc, gitconfig, vimrc）
 make link/config        # ~/.config/配下にリンク（ghostty, borders, karabiner, peco, yazi）
 make link/claude        # ~/.claude/配下にリンク
 make unlink             # リンク解除
@@ -60,7 +60,6 @@ bash macos/defaults.sh  # macOS のシステム設定を適用（要再起動）
 ├── git/                # ~/.gitconfig
 ├── vim/                # ~/.vimrc
 ├── ghostty/            # ~/.config/ghostty/config
-├── aerospace/          # ~/.aerospace.toml
 ├── borders/            # ~/.config/borders/bordersrc
 ├── karabiner/          # ~/.config/karabiner/karabiner.json
 ├── peco/               # ~/.config/peco/config.json
