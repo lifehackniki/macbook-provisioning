@@ -1,7 +1,7 @@
 PWD := $(shell pwd)
 HOSTNAME := $(shell hostname -s)
 
-.PHONY: link unlink link/home link/config copy/claude setup package/install package/cleanup package/check package/dump yazi/install npm/install
+.PHONY: link unlink link/home link/config copy/claude setup package/install package/cleanup package/check package/dump yazi/install npm/install bettertouchtool/export bettertouchtool/import
 
 link: link/home link/config copy/claude
 
@@ -71,4 +71,10 @@ yazi/install:
 
 npm/install:
 	cat npm/global-packages.txt | xargs npm install -g
+
+bettertouchtool/export:
+	osascript -e 'tell application "BetterTouchTool" to export_preset "Default" outputPath "$(PWD)/bettertouchtool/default.bttpreset"'
+
+bettertouchtool/import:
+	osascript -e 'tell application "BetterTouchTool" to import_preset "$(PWD)/bettertouchtool/default.bttpreset"'
 

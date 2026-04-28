@@ -38,6 +38,13 @@ make unlink             # リンク解除
 make yazi/install       # yaziプラグインをインストール（ya packコマンド使用）
 ```
 
+### BetterTouchTool
+```bash
+make bettertouchtool/export  # 現在のBTT設定をbettertouchtool/default.bttpresetに書き出し
+make bettertouchtool/import  # リポジトリのpresetをBTTに流し込み
+```
+AppleScript経由で自動化。詳細は `bettertouchtool/README.md`。
+
 ### macOS システム設定
 ```bash
 bash macos/defaults.sh  # macOS のシステム設定を適用（要再起動）

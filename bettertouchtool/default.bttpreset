@@ -1,0 +1,446 @@
+{
+  "BTTPresetName" : "Default",
+  "BTTPresetColor" : "25.786110, 15.493800, 221.340000, 255.000000",
+  "BTTPresetUUID" : "C5AFD450-475E-4C6B-93D0-98AEEB1452BA",
+  "BTTPresetContent" : [
+    {
+      "BTTAppBundleIdentifier" : "BT.G",
+      "BTTAppName" : "Global",
+      "BTTAppAutoInvertIcon" : 1,
+      "BTTAppSpecificSettings" : {
+        "BTTDisableGlobalTriggers" : false
+      },
+      "BTTTriggers" : [
+        {
+          "BTTLastUpdatedAt" : 1773882269.8600612,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "E60328C4-665D-4C75-B6DC-A3D3D93C0BED",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "q",
+          "BTTShortcutKeyCode" : 12,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 4,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773716255.9344192,
+              "BTTTriggerParentUUID" : "E60328C4-665D-4C75-B6DC-A3D3D93C0BED",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "A0C01553-24E5-4E65-8A14-AC351D4B756D",
+              "BTTPredefinedActionType" : 177,
+              "BTTPredefinedActionName" : "特定のアプリケーションを表示 or 非表示",
+              "BTTAppToShowOrHide" : "/Applications/Biscuit.app",
+              "BTTShowHideAppConfig" : "{\"BTTShowHideSpecificAppMoveToSpace\":\"BTTShowHideSpecificAppHiddenToCurrentSpace\",\"BTTShowHideSpecificAppOnlyShow\":false,\"BTTShowHideSpecificAppOnlyHide\":false,\"BTTShowHideSpecificAffectedWindow\":\"BTTShowHideSpecificAppAffectLastUsedWindow\",\"BTTShowHideSpecificMinimizeInstead\":false,\"BTTShowHideSpecificAppRegex\":\"\",\"BTTShowHideSpecificAppOnlyTreatActiveAsVisible\":true,\"BTTShowHideSpecificAppOnlyIfRunning\":false,\"BTTShowHideSpecificAppCMDN\":false,\"BTTShowHideSpecificAppMoveToCurrentSpace\":false,\"BTTShowHideSpecificAppMoveAllToCurrentSpace\":false}",
+              "BTTOrder" : 6
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.860122,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "FAACBBAF-7FD9-4E1B-946F-F6A9EC5753A7",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "m",
+          "BTTShortcutKeyCode" : 46,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 7,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773717872.7883492,
+              "BTTTriggerParentUUID" : "FAACBBAF-7FD9-4E1B-946F-F6A9EC5753A7",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "EF0B1BE5-3DA7-437E-9F3E-D569C476D25A",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/Applications/Claude.app",
+              "BTTOrder" : 8
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.8601551,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "F6ACA614-1341-4187-89C5-8B5DDAA0436A",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "g",
+          "BTTShortcutKeyCode" : 5,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 3,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773716220.3538699,
+              "BTTTriggerParentUUID" : "F6ACA614-1341-4187-89C5-8B5DDAA0436A",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "17F82693-5D20-40B2-8C8E-A39E84167AE7",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/Applications/Google Chrome Canary.app",
+              "BTTOrder" : 5
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773797477.3071752,
+          "BTTTriggerType" : 106,
+          "BTTTriggerTypeDescriptionReadOnly" : "4本指で右にスワイプ",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "6FBDF2F1-0986-4C36-A8FA-CBFF6804D22E",
+          "BTTOrder" : 3,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773797285.1815419,
+              "BTTTriggerParentUUID" : "6FBDF2F1-0986-4C36-A8FA-CBFF6804D22E",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "BD0A5B3B-50A2-4399-B810-EE5F12856549",
+              "BTTLayoutIndependentActionChar" : "]",
+              "BTTShortcutToSend" : "56,55,30",
+              "BTTOrder" : 10
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.860162,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "29BB74B0-889B-4F9A-B28A-76228C2DF945",
+          "BTTAdditionalConfiguration" : "1572904",
+          "BTTShortcutKeyboardType" : 0,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "f",
+          "BTTShortcutKeyCode" : 3,
+          "BTTShortcutAdvancedModifierKeys" : "1572904",
+          "BTTShortcutModifierKeys" : 1572864,
+          "BTTOrder" : 0,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773711908.097903,
+              "BTTTriggerParentUUID" : "29BB74B0-889B-4F9A-B28A-76228C2DF945",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "8D712AF2-2463-41BA-88C5-B551A309ADC9",
+              "BTTPredefinedActionType" : 21,
+              "BTTPredefinedActionName" : "ウインドウを最大化",
+              "BTTOrder" : 1
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773797277.837642,
+          "BTTTriggerType" : 103,
+          "BTTTriggerTypeDescriptionReadOnly" : "3本指で下にスワイプ",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "2F6232B1-8A31-4B7E-B47A-4E0AEB7FE803",
+          "BTTOrder" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773712006.2455668,
+              "BTTTriggerParentUUID" : "2F6232B1-8A31-4B7E-B47A-4E0AEB7FE803",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "FACC20EE-90A6-4594-A391-544E4B444AFC",
+              "BTTLayoutIndependentActionChar" : "w",
+              "BTTShortcutToSend" : "55,13",
+              "BTTOrder" : 3
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773810078.7027521,
+          "BTTTriggerType" : 112,
+          "BTTTriggerTypeDescriptionReadOnly" : "3本指でクリック",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "22D3D97F-6FDE-4494-8590-430E173E2BF0",
+          "BTTOrder" : 5,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773810089.2397289,
+              "BTTTriggerParentUUID" : "22D3D97F-6FDE-4494-8590-430E173E2BF0",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "BEA38EAE-54BC-4094-9F00-33D7E014827E",
+              "BTTPredefinedActionType" : 1,
+              "BTTPredefinedActionName" : "中クリック (At Current Mouse Position)",
+              "BTTOrder" : 12
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1776336357.040509,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "F5D0CB20-23D9-4E1B-82AE-DE14411ADA65",
+          "BTTAdditionalConfiguration" : "9961512",
+          "BTTShortcutKeyboardType" : 0,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "LEFT",
+          "BTTShortcutKeyCode" : 123,
+          "BTTShortcutAdvancedModifierKeys" : "9961512",
+          "BTTShortcutModifierKeys" : 9961472,
+          "BTTOrder" : 1,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773803043.465966,
+              "BTTTriggerParentUUID" : "F5D0CB20-23D9-4E1B-82AE-DE14411ADA65",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "BBA4662D-BDDB-4E7B-8955-1BFC44FA57CF",
+              "BTTPredefinedActionType" : 19,
+              "BTTPredefinedActionName" : "ウインドウを左半分に最大化",
+              "BTTOrder" : 2
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773835187.856472,
+          "BTTTriggerType" : 108,
+          "BTTTriggerTypeDescriptionReadOnly" : "4本指で上にスワイプ",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "B80D6877-4A11-4620-B6D4-83287B74D1BB",
+          "BTTOrder" : 1,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773712076.027781,
+              "BTTTriggerParentUUID" : "B80D6877-4A11-4620-B6D4-83287B74D1BB",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "98A6F963-4EB3-41A1-9ED3-6EEA41628F12",
+              "BTTLayoutIndependentActionChar" : "t",
+              "BTTShortcutToSend" : "56,55,17",
+              "BTTOrder" : 4
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.8601022,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "740B1092-3843-452D-B1D5-FE43F5DBBD0A",
+          "BTTShortcutKeyboardType" : 0,
+          "BTTTriggerOnDown" : 1,
+          "BTTShortcutKeyCode" : -1,
+          "BTTOrder" : 10,
+          "BTTAutoAdaptToKeyboardLayout" : 0
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.86008,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "79E40E7A-F5CF-4411-B4BC-E48B1EDF0E42",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "x",
+          "BTTShortcutKeyCode" : 7,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 9,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773721302.2766509,
+              "BTTTriggerParentUUID" : "79E40E7A-F5CF-4411-B4BC-E48B1EDF0E42",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "92DD81E4-399E-40B0-9309-9E4F6E72B8F9",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/Applications/Notion.app",
+              "BTTOrder" : 8
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773810065.924051,
+          "BTTTriggerType" : 107,
+          "BTTTriggerTypeDescriptionReadOnly" : "4本指で下にスワイプ",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "4FD6DFA6-4FBC-4EB4-B7D2-ECB46A5A81DF",
+          "BTTOrder" : 4,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773797495.4406209,
+              "BTTTriggerParentUUID" : "4FD6DFA6-4FBC-4EB4-B7D2-ECB46A5A81DF",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "4768B90B-6CAE-4302-9047-9E0DF751BB34",
+              "BTTLayoutIndependentActionChar" : "w",
+              "BTTShortcutToSend" : "55,13",
+              "BTTOrder" : 11
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1776336357.0405312,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "88B220E0-AA72-42A6-A0BB-B731B3B475F9",
+          "BTTAdditionalConfiguration" : "9961512",
+          "BTTShortcutKeyboardType" : 0,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "RIGHT",
+          "BTTShortcutKeyCode" : 124,
+          "BTTShortcutAdvancedModifierKeys" : "9961512",
+          "BTTShortcutModifierKeys" : 9961472,
+          "BTTOrder" : 2,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773803055.3156691,
+              "BTTTriggerParentUUID" : "88B220E0-AA72-42A6-A0BB-B731B3B475F9",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "07CCF92D-3C64-4506-A8D9-F3F498291B6C",
+              "BTTPredefinedActionType" : 20,
+              "BTTPredefinedActionName" : "ウインドウを右半分に最大化",
+              "BTTOrder" : 2
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773716286.5359678,
+          "BTTTriggerType" : 832,
+          "BTTTriggerTypeDescriptionReadOnly" : "h@llo.ai - BetterTouchTool設定アシスタント",
+          "BTTTriggerTypeDescription" : "BetterTouchTool Configuration Assistant",
+          "BTTTriggerClass" : "BTTTriggerTypeHalloAI",
+          "BTTUUID" : "025FF521-D553-4E2D-8A34-0FD89F415906",
+          "BTTAdditionalConfiguration" : "D7E9AC28-3EDF-4ECC-8927-687408A251A7",
+          "BTTOrder" : 7,
+          "BTTAdditionalDataJSON" : {
+            "BTTAIAPIType" : "openai-completion",
+            "BTTAIChatIdentifier" : "D7E9AC28-3EDF-4ECC-8927-687408A251A7",
+            "BTTAICustomURL" : "https://api.openai.com/v1/chat/completions",
+            "BTTAIFallbackEnabled" : false,
+            "BTTAIModel" : "gpt-5.4"
+          },
+          "BTTGestureNotes" : "BetterTouchTool Configuration Assistant"
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.8600869,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "62A621C6-8686-4301-8AEF-94DB482ADD65",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "y",
+          "BTTShortcutKeyCode" : 16,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 8,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1775356484.6105208,
+              "BTTTriggerParentUUID" : "62A621C6-8686-4301-8AEF-94DB482ADD65",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "9C9AEF82-527F-4322-B12E-1A6262B79049",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/Applications/Antigravity.app",
+              "BTTOrder" : 8
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.863271,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "60D56EAF-C40D-456B-AA71-340C6CB0500D",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 0,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "z",
+          "BTTShortcutKeyCode" : 6,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 6,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773882278.935441,
+              "BTTTriggerParentUUID" : "60D56EAF-C40D-456B-AA71-340C6CB0500D",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "DFA27DE7-B907-4831-A91A-0184431FC329",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/System/Applications/Calendar.app",
+              "BTTOrder" : 8
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773797477.307157,
+          "BTTTriggerType" : 105,
+          "BTTTriggerTypeDescriptionReadOnly" : "4本指で左にスワイプ",
+          "BTTTriggerClass" : "BTTTriggerTypeTouchpadAll",
+          "BTTUUID" : "04D9247F-6B9C-4A8D-9A53-92479391E717",
+          "BTTOrder" : 2,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773797276.170064,
+              "BTTTriggerParentUUID" : "04D9247F-6B9C-4A8D-9A53-92479391E717",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "99377F5F-D9FC-4469-A0AE-D152BC665045",
+              "BTTLayoutIndependentActionChar" : "[",
+              "BTTShortcutToSend" : "56,55,33",
+              "BTTOrder" : 9
+            }
+          ]
+        },
+        {
+          "BTTLastUpdatedAt" : 1773882269.860137,
+          "BTTTriggerType" : 0,
+          "BTTTriggerClass" : "BTTTriggerTypeKeyboardShortcut",
+          "BTTUUID" : "5F19972A-85A1-4FD5-9917-0539E7E2A064",
+          "BTTAdditionalConfiguration" : "262145",
+          "BTTShortcutKeyboardType" : 14782,
+          "BTTTriggerOnDown" : 1,
+          "BTTLayoutIndependentChar" : "i",
+          "BTTShortcutKeyCode" : 34,
+          "BTTShortcutAdvancedModifierKeys" : "262145",
+          "BTTShortcutModifierKeys" : 262144,
+          "BTTOrder" : 5,
+          "BTTAutoAdaptToKeyboardLayout" : 0,
+          "BTTActionsToExecute" : [
+            {
+              "BTTLastUpdatedAt" : 1773716391.217268,
+              "BTTTriggerParentUUID" : "5F19972A-85A1-4FD5-9917-0539E7E2A064",
+              "BTTIsPureAction" : true,
+              "BTTUUID" : "52DB697E-4126-4817-8B29-BC78A3E4A14F",
+              "BTTPredefinedActionType" : 49,
+              "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
+              "BTTLaunchPath" : "/Applications/cmux.app",
+              "BTTOrder" : 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "BTTAppBundleIdentifier" : "com.apple.finder",
+      "BTTAppName" : "Finder",
+      "BTTAppAutoInvertIcon" : 1,
+      "BTTTriggers" : [
+
+      ]
+    },
+    {
+      "BTTAppBundleIdentifier" : "BT.L",
+      "BTTAppName" : "Recently Used",
+      "BTTAppAutoInvertIcon" : 1,
+      "BTTTriggers" : [
+
+      ]
+    }
+  ],
+  "BTTPresetSnapAreas" : [
+
+  ]
+}

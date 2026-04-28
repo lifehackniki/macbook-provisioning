@@ -32,6 +32,8 @@ bash -c "$(curl -fsSL https://raw.githubusercontent.com/chocopie116/macbook-prov
 | `make package/cleanup` | 不要パッケージ削除 |
 | `make npm/install` | グローバル npm パッケージインストール |
 | `make yazi/install` | yazi プラグインインストール |
+| `make bettertouchtool/export` | 現在の BTT 設定を `bettertouchtool/default.bttpreset` に書き出し |
+| `make bettertouchtool/import` | リポジトリの BTT preset を BTT に流し込み |
 
 ### 設定ファイルのリンク
 
@@ -68,6 +70,7 @@ bash macos/defaults.sh  # macOS のシステム設定を適用（要再起動）
 ├── yazi/                 # ~/.config/yazi/*
 ├── lazygit/              # ~/.config/lazygit/config.yml
 ├── claude/               # ~/.claude/*
+├── bettertouchtool/      # BTT preset（トラックパッド・キーボード）
 ├── npm/                  # グローバル npm パッケージ一覧
 ├── macos/                # macOS 設定スクリプト
 └── bin/                  # ユーティリティスクリプト（takt, mdview）
