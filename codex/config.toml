@@ -1,4 +1,3 @@
-model = "gpt-5.4"
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
 model_reasoning_effort = "medium"
@@ -11,6 +10,9 @@ persistence = "save-all"
 status_line = ["model-with-reasoning", "used-tokens", "five-hour-limit", "weekly-limit", "current-dir"]
 notifications = ["agent-turn-complete","approval-requested"]
 
+[tui.model_availability_nux]
+"gpt-5.5" = 4
+
 [projects."/Users/niki/ghq/github.com/co-cre/kajinuma-os"]
 trust_level = "trusted"
 
@@ -18,4 +20,10 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/niki/ghq/github.com/lifehackniki/zentou-ai"]
+trust_level = "trusted"
+
+[projects."/Users/niki/ghq/github.com/chocopie116/macbook-provisioning"]
+trust_level = "trusted"
+
+[projects."/private/tmp"]
 trust_level = "trusted"

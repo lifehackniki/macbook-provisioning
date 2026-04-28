@@ -78,9 +78,28 @@ fi
 LINE1="📁 ${bold}${DIR_NAME}${reset}"
 [ -n "$GIT_BRANCH" ] && LINE1="${LINE1}  🌿 ${bold}${GIT_BRANCH}${reset}${GIT_DIFF_STR}"
 
-# --- Line 2: model, context, usage ---
+# --- Line 2: model, effort, context, usage ---
 ctx_color=$(color_for_pct "$ctx_percentage")
-LINE_INFO="🤖 ${dim}${MODEL_DISPLAY}${reset}  ${ctx_color}${current_fmt}/${total_fmt} (${ctx_percentage}%)${reset}"
+
+# Effort level: env var > user settings > (unknown)
+EFFORT_LEVEL="${CLAUDE_CODE_EFFORT_LEVEL:-}"
+if [ -z "$EFFORT_LEVEL" ] && [ -f "$HOME/.claude/settings.json" ]; then
+  EFFORT_LEVEL=$(jq -r '.effortLevel // empty' "$HOME/.claude/settings.json" 2>/dev/null)
+fi
+
+EFFORT_STR=""
+if [ -n "$EFFORT_LEVEL" ]; then
+  case "$EFFORT_LEVEL" in
+    low)    effort_color="$green" ;;
+    medium) effort_color="$cyan" ;;
+    high)   effort_color="$yellow" ;;
+    xhigh)  effort_color="$red" ;;
+    *)      effort_color="$dim" ;;
+  esac
+  EFFORT_STR="  ⚡ ${effort_color}${EFFORT_LEVEL}${reset}"
+fi
+
+LINE_INFO="🤖 ${dim}${MODEL_DISPLAY}${reset}${EFFORT_STR}  ${ctx_color}${current_fmt}/${total_fmt} (${ctx_percentage}%)${reset}"
 
 # --- Lines 3-4: API Usage (5h / 7d) with caching ---
 CACHE_FILE="/tmp/claude-usage-cache.json"
