@@ -7,14 +7,14 @@ macOS の環境構築を自動化するプロビジョニングリポジトリ�
 新しい Mac でターミナルを開いて、これだけ:
 
 ```bash
-bash -c "$(curl -fsSL https://raw.githubusercontent.com/chocopie116/macbook-provisioning/main/bootstrap.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/lifehackniki/macbook-provisioning/main/bootstrap.sh)"
 ```
 
 このスクリプトが以下を自動で行います:
 
 1. Xcode Command Line Tools
 2. Homebrew
-3. リポジトリのクローン (`~/ghq/github.com/chocopie116/macbook-provisioning`)
+3. リポジトリのクローン (`~/ghq/github.com/lifehackniki/macbook-provisioning`)
 4. Homebrew パッケージ・Cask・MAS アプリ・VSCode 拡張のインストール
 5. 設定ファイルのシンボリックリンク作成
 6. yazi プラグインのインストール

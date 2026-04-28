@@ -1,8 +1,8 @@
 #!/bin/bash
 set -e
 
-REPO_URL="https://github.com/chocopie116/macbook-provisioning.git"
-REPO_DIR="$HOME/ghq/github.com/chocopie116/macbook-provisioning"
+REPO_URL="https://github.com/lifehackniki/macbook-provisioning.git"
+REPO_DIR="$HOME/ghq/github.com/lifehackniki/macbook-provisioning"
 
 echo "==> macOS provisioning start"
 

@@ -22,7 +22,7 @@ trust_level = "trusted"
 [projects."/Users/niki/ghq/github.com/lifehackniki/zentou-ai"]
 trust_level = "trusted"
 
-[projects."/Users/niki/ghq/github.com/chocopie116/macbook-provisioning"]
+[projects."/Users/niki/ghq/github.com/lifehackniki/macbook-provisioning"]
 trust_level = "trusted"
 
 [projects."/private/tmp"]
