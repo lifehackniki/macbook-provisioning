@@ -1,7 +1,7 @@
 # ~/.config/ghostty/config
 
 # テーマ
-theme = Solarized Dark Patched
+theme = Solarized Dark Higher Contrast
 
 # フォント
 font-family = "JetBrains Mono"
