@@ -28,3 +28,6 @@ window-save-state = always
 # macOS 設定
 macos-titlebar-style = tabs
 macos-option-as-alt = false
+
+# SSH接続時にterminfoと環境変数を自動転送
+shell-integration-features = ssh-env,ssh-terminfo

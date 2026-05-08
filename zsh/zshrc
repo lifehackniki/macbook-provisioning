@@ -131,8 +131,8 @@ function ccc() {
     fi
 }
 
-function kc() {
-    cd "$HOME/Library/Mobile Documents/iCloud~md~obsidian/Documents/kuromaku" && claude --dangerously-skip-permissions
+function k() {
+    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
 }
 
 # -------------------------------------
