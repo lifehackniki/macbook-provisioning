@@ -158,6 +158,10 @@ alias c='claude --dangerously-skip-permissions'
 alias cr='claude -r --fork-session --dangerously-skip-permissions'
 alias cx='codex --dangerously-bypass-approvals-and-sandbox'
 alias cxr='codex --dangerously-bypass-approvals-and-sandbox resume'
+function macmini-fwd() {
+    local port=${1:-5500}
+    ssh -L "${port}:localhost:${port}" macmini
+}
 
 function chpwd() { ls }
 
@@ -202,3 +206,4 @@ export PATH="/Users/tsubasa/.antigravity/antigravity/bin:$PATH"
 
 # Added by Antigravity
 export PATH="/Users/niki/.antigravity/antigravity/bin:$PATH"
+export PATH=/opt/homebrew/share/google-cloud-sdk/bin:"$PATH"
