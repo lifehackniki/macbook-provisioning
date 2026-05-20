@@ -30,3 +30,9 @@ trust_level = "trusted"
 
 [projects."/Users/niki/ghq/github.com/lifehackniki/prism"]
 trust_level = "trusted"
+
+[projects."/Users/lifehackniki"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/hermes"]
+trust_level = "trusted"
