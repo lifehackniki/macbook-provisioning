@@ -131,6 +131,13 @@ function ccc() {
     fi
 }
 
+function ccr() {
+    local src_dir=$(ghq list --full-path | peco --query "$LBUFFER")
+    if [ -n "$src_dir" ]; then
+        cd "$src_dir" && claude -r --fork-session --dangerously-skip-permissions
+    fi
+}
+
 function k() {
     cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
 }
