@@ -142,6 +142,14 @@ function k() {
     cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
 }
 
+function kc() {
+    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
+}
+
+function kr() {
+    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude -r --fork-session --dangerously-skip-permissions
+}
+
 # -------------------------------------
 # キーバインド
 # -------------------------------------
