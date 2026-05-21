@@ -3,6 +3,11 @@ sandbox_mode = "danger-full-access"
 model_reasoning_effort = "medium"
 web_search = "cached"
 
+# gws (Google Workspace CLI): headless/SSH 環境では OS キーチェーンが使えないため
+# ファイルバックエンドで認証情報を復号する。Codex が実行するコマンドへ env var を渡す。
+[shell_environment_policy]
+set = { GOOGLE_WORKSPACE_CLI_KEYRING_BACKEND = "file" }
+
 [history]
 persistence = "save-all"
 
