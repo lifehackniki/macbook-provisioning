@@ -173,7 +173,7 @@ alias c='claude --dangerously-skip-permissions'
 alias cr='claude -r --fork-session --dangerously-skip-permissions'
 alias cx='codex --dangerously-bypass-approvals-and-sandbox'
 alias cxr='codex --dangerously-bypass-approvals-and-sandbox resume'
-alias M='ssh macmini'
+alias m='ssh macmini'
 function macmini-fwd() {
     local port=${1:-5500}
     ssh -L "${port}:localhost:${port}" macmini
