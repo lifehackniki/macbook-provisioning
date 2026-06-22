@@ -1,7 +1,12 @@
 approval_policy = "never"
 sandbox_mode = "danger-full-access"
+forced_login_method = "chatgpt"
 model_reasoning_effort = "medium"
+service_tier = "fast"
 web_search = "cached"
+
+[features]
+fast_mode = true
 
 # gws (Google Workspace CLI): headless/SSH 環境では OS キーチェーンが使えないため
 # ファイルバックエンドで認証情報を復号する。Codex が実行するコマンドへ env var を渡す。
@@ -43,4 +48,7 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/niki/ghq/github.com/cocre-web-studio/makasete.co"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/makasete"]
 trust_level = "trusted"
