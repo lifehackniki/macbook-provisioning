@@ -131,31 +131,23 @@ function p() {
     fi
 }
 
-function ccc() {
-    local src_dir=$(ghq list --full-path | peco --query "$LBUFFER")
-    if [ -n "$src_dir" ]; then
-        cd "$src_dir" && claude --dangerously-skip-permissions
-    fi
-}
+_claude='claude --dangerously-skip-permissions'
+_claude_r='claude -r --fork-session --dangerously-skip-permissions'
+_codex='codex --dangerously-bypass-approvals-and-sandbox'
+_codex_r='codex --dangerously-bypass-approvals-and-sandbox resume'
 
-function ccr() {
-    local src_dir=$(ghq list --full-path | peco --query "$LBUFFER")
-    if [ -n "$src_dir" ]; then
-        cd "$src_dir" && claude -r --fork-session --dangerously-skip-permissions
-    fi
-}
+_pick() { ghq list --full-path | peco --query "$LBUFFER" }
+pc()  { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_claude"   }
+pcr() { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_claude_r" }
+px()  { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_codex"    }
+pxr() { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_codex_r"  }
 
-function k() {
-    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
-}
-
-function kc() {
-    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude --dangerously-skip-permissions
-}
-
-function kr() {
-    cd "$HOME/ghq/github.com/co-cre/kajinuma-os" && claude -r --fork-session --dangerously-skip-permissions
-}
+_kj() { cd "$HOME/ghq/github.com/co-cre/kajinuma-os" }
+kc()  { _kj && eval "$_claude"   }
+kcr() { _kj && eval "$_claude_r" }
+kx()  { _kj && eval "$_codex"    }
+kxr() { _kj && eval "$_codex_r"  }
+alias k=kc
 
 # -------------------------------------
 # キーバインド
@@ -172,21 +164,15 @@ alias la="ls -la"
 alias g="git"
 alias cdg="cd-gitroot"
 alias z="source ~/.zshrc"
-alias cr="cursor"
+alias cur="cursor"
 alias -g C='| pbcopy'
 alias y='yazi'
 alias gp='git add -A && expect -c '"'"'spawn aicommits -a; expect "Yes"; send "\r"; expect eof'"'"' && git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias c='claude --dangerously-skip-permissions'
 alias cr='claude -r --fork-session --dangerously-skip-permissions'
-alias cx='codex --dangerously-bypass-approvals-and-sandbox'
-alias cxr='codex --dangerously-bypass-approvals-and-sandbox resume'
-alias M='ssh macmini'
-function m() {
-    ssh -t macmini 'zsh -ic k'
-}
-function mr() {
-    ssh -t macmini 'zsh -ic kr'
-}
+alias x='codex --dangerously-bypass-approvals-and-sandbox'
+alias xr='codex --dangerously-bypass-approvals-and-sandbox resume'
+alias m='ssh macmini'
 function macmini-fwd() {
     local port=${1:-5500}
     ssh -L "${port}:localhost:${port}" macmini
