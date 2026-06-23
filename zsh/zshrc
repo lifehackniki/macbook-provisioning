@@ -124,6 +124,13 @@ function peco_src() {
 }
 zle -N peco_src
 
+function p() {
+    local src_dir=$(ghq list --full-path | peco)
+    if [ -n "$src_dir" ]; then
+        cd "$src_dir"
+    fi
+}
+
 function ccc() {
     local src_dir=$(ghq list --full-path | peco --query "$LBUFFER")
     if [ -n "$src_dir" ]; then
