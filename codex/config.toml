@@ -48,3 +48,18 @@ trust_level = "trusted"
 
 [projects."/Users/niki/ghq/github.com/cocre-web-studio/makasete.co"]
 trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/makasete"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/cocre-dev"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/cocre-web-studio/makasete.co"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/co-cre/RESON"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki/ghq/github.com/lifehackniki/macbook-provisioning"]
+trust_level = "trusted"
