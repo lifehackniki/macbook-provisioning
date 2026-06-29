@@ -343,7 +343,7 @@
               "BTTUUID" : "9C9AEF82-527F-4322-B12E-1A6262B79049",
               "BTTPredefinedActionType" : 49,
               "BTTPredefinedActionName" : "アプリケーションを起動  or  ファイルを開く  or  AppleScriptを開始…",
-              "BTTLaunchPath" : "/Applications/Antigravity.app",
+              "BTTLaunchPath" : "/Applications/Cursor.app",
               "BTTOrder" : 8
             }
           ]
