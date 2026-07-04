@@ -34,13 +34,7 @@ trust_level = "trusted"
 [projects."/Users/niki/ghq/github.com/lifehackniki/macbook-provisioning"]
 trust_level = "trusted"
 
-[projects."/private/tmp"]
-trust_level = "trusted"
-
 [projects."/Users/niki/ghq/github.com/lifehackniki/prism"]
-trust_level = "trusted"
-
-[projects."/Users/lifehackniki"]
 trust_level = "trusted"
 
 [projects."/Users/lifehackniki/ghq/github.com/co-cre/hermes"]
