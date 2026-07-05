@@ -59,7 +59,16 @@ case "${(L)HOST}" in
     *) _prompt_label='' ;;
 esac
 
-PROMPT="${_prompt_label}${_prompt_emoji} [%1~]"$'\n'"❯ "
+# Gitブランチ表示（vcs_info: .git/HEAD等を読むだけの軽量動作。check-for-changesは大きいリポジトリで重いので無効のまま）
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git
+zstyle ':vcs_info:git:*' formats ' %F{147}(%b)%f'
+zstyle ':vcs_info:git:*' actionformats ' %F{203}(%b|%a)%f'
+precmd_functions+=(vcs_info)
+
+# 要素ごとに色分け: ホスト=紫 / ディレクトリ=オレンジ / ブランチ=薄紫 / プロンプト記号=緑（Claudeステータスラインと同系色）
+setopt prompt_subst
+PROMPT="%B%F{141}${_prompt_label}%f%b${_prompt_emoji} %F{208}[%1~]%f"'${vcs_info_msg_0_}'$'\n'"%F{114}❯%f "
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
