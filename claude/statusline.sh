@@ -28,11 +28,16 @@ ctx_percentage=$((current_tokens * 100 / CONTEXT_SIZE))
 reset="\033[0m"
 dim="\033[2m"
 bold="\033[1m"
-red="\033[31m"
-yellow="\033[33m"
-green="\033[32m"
-cyan="\033[36m"
-orange="\033[38;5;208m"
+# 役割ごとに色を割り当て、要素を色で判別できるようにする（256色）
+red="\033[38;5;203m"       # 危険値・削除行
+yellow="\033[38;5;214m"    # 警告値
+green="\033[38;5;114m"     # 正常値・追加行
+cyan="\033[38;5;81m"       # ctx ラベル
+orange="\033[38;5;208m"    # ディレクトリ名
+blue="\033[38;5;75m"       # 5h ラベル
+violet="\033[38;5;141m"    # 7d ラベル・ホストラベル
+pink="\033[38;5;205m"      # Fable ラベル
+teal="\033[38;5;43m"       # git ブランチ
 
 color_for_pct() {
   local pct=$1
@@ -62,14 +67,14 @@ SEP_W=3
 # zshプロンプトと同じホスト判定（絵文字 + 略称ラベル）
 HOST_LC=$(hostname | tr '[:upper:]' '[:lower:]')
 case "$HOST_LC" in
-  *macbook*|*mba*|*air*)       HOST_SEG="MBA 💻" ;;
-  *macmini*|*mac-mini*|*mini*) HOST_SEG="Mini 🖥️" ;;
-  *)                           HOST_SEG="$HOST_LC" ;;
+  *macbook*|*mba*|*air*)       HOST_SEG="${bold}${violet}MBA${reset} 💻" ;;
+  *macmini*|*mac-mini*|*mini*) HOST_SEG="${bold}${violet}Mini${reset} 🖥️" ;;
+  *)                           HOST_SEG="${bold}${violet}${HOST_LC}${reset}" ;;
 esac
 
 SEG1_DIR="${bold}${orange}${DIR_NAME}${reset}"
 SEG1_BRANCH=""
-[ -n "$GIT_BRANCH" ] && SEG1_BRANCH="${green}${GIT_BRANCH}${reset}"
+[ -n "$GIT_BRANCH" ] && SEG1_BRANCH="${teal}${GIT_BRANCH}${reset}"
 
 SEG1_DIFF=""
 if [ -n "$GIT_BRANCH" ] && git rev-parse &>/dev/null; then
@@ -107,7 +112,7 @@ fmt_t() {
   local t=$1
   if [ "$t" -ge 1000 ]; then echo "$((t/1000))k"; else echo "$t"; fi
 }
-SEG2_CTX="${ctx_color}ctx ${ctx_percentage}%${reset}${dim} ($(fmt_t $current_tokens))${reset}"
+SEG2_CTX="${cyan}ctx${reset} ${ctx_color}${ctx_percentage}%${reset}${dim} ($(fmt_t $current_tokens))${reset}"
 
 EFFORT_LEVEL="${CLAUDE_CODE_EFFORT_LEVEL:-}"
 if [ -z "$EFFORT_LEVEL" ] && [ -f "$HOME/.claude/settings.json" ]; then
@@ -177,13 +182,13 @@ if [ -n "$usage_data" ] && [ "$usage_data" != "null" ]; then
   seven_pct=$(echo "$usage_data" | jq -r '.seven_day.utilization // 0 | floor')
   five_color=$(color_for_pct "$five_pct")
   seven_color=$(color_for_pct "$seven_pct")
-  SEG2_5H="${dim}5h${reset} ${five_color}${five_pct}%${reset}"
-  SEG2_7D="${dim}7d${reset} ${seven_color}${seven_pct}%${reset}"
+  SEG2_5H="${blue}5h${reset} ${five_color}${five_pct}%${reset}"
+  SEG2_7D="${violet}7d${reset} ${seven_color}${seven_pct}%${reset}"
   # モデル別週次上限（Fable など weekly_scoped）
   fable_pct=$(echo "$usage_data" | jq -r '[.limits[]? | select(.kind == "weekly_scoped").percent][0] // empty')
   if [ -n "$fable_pct" ]; then
     fable_color=$(color_for_pct "$fable_pct")
-    SEG2_FABLE="${dim}F${reset} ${fable_color}${fable_pct}%${reset}"
+    SEG2_FABLE="${pink}F${reset} ${fable_color}${fable_pct}%${reset}"
   fi
 fi
 
