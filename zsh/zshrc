@@ -59,42 +59,7 @@ case "${(L)HOST}" in
     *) _prompt_label='' ;;
 esac
 
-# Claude利用率（5時間 / 週 / Fable週）をパーセントで表示
-# APIコールでプロンプトを遅くしないよう、5分キャッシュ＋バックグラウンド更新
-_claude_usage_cache="$HOME/.cache/claude-usage.json"
-
-_claude_usage_refresh() {
-    local token
-    token=$(jq -r '.claudeAiOauth.accessToken // empty' "$HOME/.claude/.credentials.json" 2>/dev/null)
-    [ -z "$token" ] && return
-    mkdir -p "${_claude_usage_cache:h}"
-    curl -s --max-time 5 https://api.anthropic.com/api/oauth/usage \
-        -H "Authorization: Bearer $token" \
-        -H "anthropic-beta: oauth-2025-04-20" \
-        > "${_claude_usage_cache}.tmp" 2>/dev/null \
-        && mv "${_claude_usage_cache}.tmp" "$_claude_usage_cache"
-}
-
-_claude_usage_str() {
-    [ -f "$_claude_usage_cache" ] || return
-    jq -r '
-        def pct(k): [.limits[] | select(.kind == k).percent][0] // "-";
-        "5h:\(pct("session"))%% 7d:\(pct("weekly_all"))%% F:\(pct("weekly_scoped"))%%"
-    ' "$_claude_usage_cache" 2>/dev/null
-}
-
-_claude_usage_precmd() {
-    # キャッシュが5分より古ければバックグラウンドで更新
-    if [ ! -f "$_claude_usage_cache" ] || \
-       [ $(( $(date +%s) - $(stat -f %m "$_claude_usage_cache" 2>/dev/null || echo 0) )) -gt 300 ]; then
-        (_claude_usage_refresh &) 2>/dev/null
-    fi
-}
-autoload -Uz add-zsh-hook
-add-zsh-hook precmd _claude_usage_precmd
-
-setopt prompt_subst
-PROMPT="${_prompt_label}${_prompt_emoji} [%1~] \$(_claude_usage_str)"$'\n'"❯ "
+PROMPT="${_prompt_label}${_prompt_emoji} [%1~]"$'\n'"❯ "
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1

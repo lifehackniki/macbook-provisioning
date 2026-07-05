@@ -32,6 +32,7 @@ red="\033[31m"
 yellow="\033[33m"
 green="\033[32m"
 cyan="\033[36m"
+orange="\033[38;5;208m"
 
 color_for_pct() {
   local pct=$1
@@ -58,7 +59,7 @@ SEP=" ${dim}·${reset} "
 SEP_W=3
 
 # ----- Line 1 segments: [dir, branch, diff] -----
-SEG1_DIR="${bold}${DIR_NAME}${reset}"
+SEG1_DIR="${bold}${orange}${DIR_NAME}${reset}"
 SEG1_BRANCH=""
 [ -n "$GIT_BRANCH" ] && SEG1_BRANCH="${green}${GIT_BRANCH}${reset}"
 
@@ -123,6 +124,7 @@ CACHE_TTL=360
 fetch_usage() {
   local token
   token=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null | jq -r '.claudeAiOauth.accessToken // empty')
+  [ -z "$token" ] && token=$(jq -r '.claudeAiOauth.accessToken // empty' "$HOME/.claude/.credentials.json" 2>/dev/null)
   [ -z "$token" ] && return 1
   local response
   response=$(curl -s --max-time 5 \
@@ -160,6 +162,7 @@ get_usage() {
 
 SEG2_5H=""
 SEG2_7D=""
+SEG2_FABLE=""
 usage_data=$(get_usage)
 if [ -n "$usage_data" ] && [ "$usage_data" != "null" ]; then
   five_pct=$(echo "$usage_data" | jq -r '.five_hour.utilization // 0 | floor')
@@ -168,6 +171,12 @@ if [ -n "$usage_data" ] && [ "$usage_data" != "null" ]; then
   seven_color=$(color_for_pct "$seven_pct")
   SEG2_5H="${dim}5h${reset} ${five_color}${five_pct}%${reset}"
   SEG2_7D="${dim}7d${reset} ${seven_color}${seven_pct}%${reset}"
+  # モデル別週次上限（Fable など weekly_scoped）
+  fable_pct=$(echo "$usage_data" | jq -r '[.limits[]? | select(.kind == "weekly_scoped").percent][0] // empty')
+  if [ -n "$fable_pct" ]; then
+    fable_color=$(color_for_pct "$fable_pct")
+    SEG2_FABLE="${dim}F${reset} ${fable_color}${fable_pct}%${reset}"
+  fi
 fi
 
 # 貪欲に組み立て（ctx 必須、effort > 5h > 7d の順で追加）
@@ -188,6 +197,7 @@ try_append2() {
 try_append2 "$SEG2_EFFORT"
 try_append2 "$SEG2_5H"
 try_append2 "$SEG2_7D"
+try_append2 "$SEG2_FABLE"
 
 echo -e "$LINE1"
 echo -e "$LINE2"
