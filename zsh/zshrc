@@ -18,8 +18,10 @@ export DISABLE_NON_ESSENTIAL_MODEL_CALLS=1
 # -------------------------------------
 # t1 : mobile用セッション（Pixel Fold）
 # t2 : desktop用セッション（MacBook Air / モニター）
-alias t1='tmux new -A -s mobile'
-alias t2='tmux new -A -s desktop'
+# t3 : glass用セッション（EvenG2）
+alias t1='tmux new -A -s pixel'
+alias t2='tmux new -A -s mba'
+alias t3='tmux new -A -s even-g2'
 
 # -------------------------------------
 # zplug
@@ -28,8 +30,6 @@ export ZPLUG_HOME=/opt/homebrew/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
 zplug 'zsh-users/zsh-completions', use:'src/_*', lazy:true
-zplug "mafredri/zsh-async", on:sindresorhus/pure
-zplug "sindresorhus/pure", use:pure.zsh
 zplug "zsh-users/zsh-syntax-highlighting"
 zplug "zsh-users/zsh-autosuggestions"
 zplug "mollifier/cd-gitroot"
@@ -42,6 +42,24 @@ if ! zplug check --verbose; then
 fi
 
 zplug load
+
+# -------------------------------------
+# プロンプト（絵文字 + カレントディレクトリ名）
+# -------------------------------------
+case "${(L)HOST}" in
+    *macbook*|*mba*|*air*) _prompt_emoji='💻' ;;
+    *macmini*|*mini*)      _prompt_emoji='🖥️' ;;
+    *)                     _prompt_emoji='%m' ;;
+esac
+
+# ホスト名の部分一致で略称ラベルを表示（一致しなければ非表示）
+case "${(L)HOST}" in
+    *macbook*|*mba*|*air*) _prompt_label='MBA ' ;;
+    *macmini*|*mac-mini*|*mini*) _prompt_label='Mini ' ;;
+    *) _prompt_label='' ;;
+esac
+
+PROMPT="${_prompt_label}${_prompt_emoji} [%1~]"$'\n'"❯ "
 
 ZSH_AUTOSUGGEST_STRATEGY=(history completion)
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
