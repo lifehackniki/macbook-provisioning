@@ -58,7 +58,15 @@ BUDGET=$(( TERM_WIDTH - 4 ))
 SEP=" ${dim}·${reset} "
 SEP_W=3
 
-# ----- Line 1 segments: [dir, branch, diff] -----
+# ----- Line 1 segments: [host, dir, branch, diff] -----
+# zshプロンプトと同じホスト判定（絵文字 + 略称ラベル）
+HOST_LC=$(hostname | tr '[:upper:]' '[:lower:]')
+case "$HOST_LC" in
+  *macbook*|*mba*|*air*)       HOST_SEG="MBA 💻" ;;
+  *macmini*|*mac-mini*|*mini*) HOST_SEG="Mini 🖥️" ;;
+  *)                           HOST_SEG="$HOST_LC" ;;
+esac
+
 SEG1_DIR="${bold}${orange}${DIR_NAME}${reset}"
 SEG1_BRANCH=""
 [ -n "$GIT_BRANCH" ] && SEG1_BRANCH="${green}${GIT_BRANCH}${reset}"
@@ -75,9 +83,9 @@ if [ -n "$GIT_BRANCH" ] && git rev-parse &>/dev/null; then
   fi
 fi
 
-# 貪欲に組み立て（dir 必須、以降は budget 内で追加）
-LINE1="$SEG1_DIR"
-LINE1_LEN=$(vlen "$SEG1_DIR")
+# 貪欲に組み立て（host + dir 必須、以降は budget 内で追加）
+LINE1="${HOST_SEG} ${SEG1_DIR}"
+LINE1_LEN=$(vlen "$LINE1")
 
 try_append() {
   local seg="$1"
