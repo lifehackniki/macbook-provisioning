@@ -70,7 +70,9 @@ precmd_functions+=(vcs_info)
 setopt prompt_subst
 PROMPT="%B%F{141}${_prompt_label}%f%b${_prompt_emoji} %F{208}[%1~]%f"'${vcs_info_msg_0_}'$'\n'"%F{114}❯%f "
 
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
+# completion戦略はzpty経由で補完を実行する際、tmux配下だと端末問い合わせ（DA応答の"c"等）が
+# 提案文字列に混入するバグがあるためhistoryのみ使用
+ZSH_AUTOSUGGEST_STRATEGY=(history)
 ZSH_AUTOSUGGEST_MANUAL_REBIND=1
 ZSH_AUTOSUGGEST_BUFFER_MAX_SIZE=20
 
