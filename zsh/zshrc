@@ -62,13 +62,20 @@ esac
 # Gitブランチ表示（vcs_info: .git/HEAD等を読むだけの軽量動作。check-for-changesは大きいリポジトリで重いので無効のまま）
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' enable git
-zstyle ':vcs_info:git:*' formats ' %F{147}(%b)%f'
-zstyle ':vcs_info:git:*' actionformats ' %F{203}(%b|%a)%f'
 precmd_functions+=(vcs_info)
 
-# 要素ごとに色分け: ホスト=紫 / ディレクトリ=オレンジ / ブランチ=薄紫 / プロンプト記号=緑（Claudeステータスラインと同系色）
 setopt prompt_subst
-PROMPT="%B%F{141}${_prompt_label}%f%b${_prompt_emoji} %F{208}[%1~]%f"'${vcs_info_msg_0_}'$'\n'"%F{114}❯%f "
+if [[ "${(L)HOST}" == (*macbook*|*mba*|*air*) ]]; then
+    # MBAは全要素を白で統一（Miniとの見分け用）
+    zstyle ':vcs_info:git:*' formats ' %F{15}(%b)%f'
+    zstyle ':vcs_info:git:*' actionformats ' %F{15}(%b|%a)%f'
+    PROMPT="%B%F{15}${_prompt_label}%f%b${_prompt_emoji} %F{15}[%1~]%f"'${vcs_info_msg_0_}'$'\n'"%F{15}❯%f "
+else
+    # 要素ごとに色分け: ホスト=紫 / ディレクトリ=オレンジ / ブランチ=薄紫 / プロンプト記号=緑（Claudeステータスラインと同系色）
+    zstyle ':vcs_info:git:*' formats ' %F{147}(%b)%f'
+    zstyle ':vcs_info:git:*' actionformats ' %F{203}(%b|%a)%f'
+    PROMPT="%B%F{141}${_prompt_label}%f%b${_prompt_emoji} %F{208}[%1~]%f"'${vcs_info_msg_0_}'$'\n'"%F{114}❯%f "
+fi
 
 # completion戦略はzpty経由で補完を実行する際、tmux配下だと端末問い合わせ（DA応答の"c"等）が
 # 提案文字列に混入するバグがあるためhistoryのみ使用
