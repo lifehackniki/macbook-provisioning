@@ -13,15 +13,15 @@ export LS_COLORS='di=36:ln=35:so=31;1;44:pi=30;1;44:ex=1;31:bd=0;1;44:cd=37;1;44
 # disable CLAUDE_CODE_TIPS 
 export DISABLE_NON_ESSENTIAL_MODEL_CALLS=1
 
-# -------------------------------------
-# tmux（手動アタッチ・デバイス別セッション）
-# -------------------------------------
-# t1 : mobile用セッション（Pixel Fold）
-# t2 : desktop用セッション（MacBook Air / モニター）
-# t3 : glass用セッション（EvenG2）
-alias t1='tmux new -A -s pixel'
-alias t2='tmux new -A -s mba'
-alias t3='tmux new -A -s even-g2'
+alias t1='tm even-g2'
+
+# SSHで入ったら自動でtmuxへアタッチ（デスクトップ用sshセッションに合流・なければ作成）
+# 条件: SSH接続 / インタラクティブシェル / まだtmux外 のときだけ発火
+# scp/rsync等の非インタラクティブ接続や、ローカル端末・入れ子は対象外
+# 別セッションへ入りたいときは合流後に t1/t2/t3（tmux内では自動でswitch-client）
+if [[ -n "$SSH_CONNECTION" && $- == *i* && -z "$TMUX" ]]; then
+    tmux new-session -A -s macmini
+fi
 
 # -------------------------------------
 # zplug
