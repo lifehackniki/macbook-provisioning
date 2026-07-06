@@ -2,7 +2,7 @@
 
 input=$(cat)
 
-MODEL_DISPLAY=$(echo "$input" | jq -r '.model.display_name')
+MODEL_DISPLAY=$(echo "$input" | jq -r '.model.display_name' | sed -E 's/ *\(.*\)//' | nkf -w -Z1 | tr -d ' ')
 CURRENT_DIR=$(echo "$input" | jq -r '.workspace.current_dir')
 DIR_NAME="${CURRENT_DIR##*/}"
 
@@ -43,6 +43,8 @@ cyandim="\033[38;5;30m"    # モデルグループの囲い・縦棒
 rose="\033[38;5;175m"      # 使用量グループ
 rosedim="\033[38;5;95m"    # 使用量グループの囲い・縦棒
 gray="\033[38;5;73m"       # トークン数など補足情報（くすんだ水色系）
+white="\033[38;5;253m"     # モデル名・effort（白字）
+amber="\033[38;5;215m"     # ctx（目立たせるアクセント）
 
 color_for_pct() {
   local pct=$1
@@ -93,32 +95,16 @@ if [ -n "$GIT_BRANCH" ] && git rev-parse &>/dev/null; then
   fi
 fi
 
-# 貪欲に組み立て（host + dir 必須、以降は budget 内で追加）
-LINE1="${HOST_SEG} ${SEG1_DIR}"
-LINE1_LEN=$(vlen "$LINE1")
-
-try_append() {
-  local seg="$1"
-  [ -z "$seg" ] && return
-  local seg_len
-  seg_len=$(vlen "$seg")
-  local need=$(( seg_len + SEP_W ))
-  if [ $(( LINE1_LEN + need )) -le "$BUDGET" ]; then
-    LINE1="${LINE1}${SEP}${seg}"
-    LINE1_LEN=$(( LINE1_LEN + need ))
-  fi
-}
-try_append "$SEG1_BRANCH"
-try_append "$SEG1_DIFF"
+# 場所（最優先で視認）: ディレクトリ=オレンジ太字 / ブランチ=ティール太字の(...)
+SEG_DIR="${bold}${green}${DIR_NAME}${reset}"
+SEG_BRANCH=""
+[ -n "$GIT_BRANCH" ] && SEG_BRANCH="${bold}${blue}(${GIT_BRANCH})${reset}"
 
 # ----- Line 2 segments: [ctx, effort, 5h, 7d] -----
 ctx_color=$(color_for_pct "$ctx_percentage")
-fmt_t() {
-  local t=$1
-  if [ "$t" -ge 1000 ]; then echo "$((t/1000))k"; else echo "$t"; fi
-}
 # モデル名とctxを同じグループ（シアン）でまとめる
-SEG2_CTX="${bold}${cyan}${MODEL_DISPLAY}${reset} ${cyandim}│${reset} ${cyan}ctx ${ctx_percentage}%${reset} ${gray}($(fmt_t $current_tokens))${reset}"
+SEG2_MODEL="${white}${MODEL_DISPLAY}${reset}"
+SEG2_CTX="${bold}${amber}ctx ${ctx_percentage}%${reset}"
 
 EFFORT_LEVEL="${CLAUDE_CODE_EFFORT_LEVEL:-}"
 if [ -z "$EFFORT_LEVEL" ] && [ -f "$HOME/.claude/settings.json" ]; then
@@ -126,7 +112,7 @@ if [ -z "$EFFORT_LEVEL" ] && [ -f "$HOME/.claude/settings.json" ]; then
 fi
 SEG2_EFFORT=""
 if [ -n "$EFFORT_LEVEL" ]; then
-  SEG2_EFFORT="${cyan}${EFFORT_LEVEL}${reset}"
+  SEG2_EFFORT="${white}${EFFORT_LEVEL}${reset}"
 fi
 
 # ----- API usage (cached) -----
@@ -191,12 +177,12 @@ if [ -n "$usage_data" ] && [ "$usage_data" != "null" ]; then
   fi
 fi
 
-# 貪欲に組み立て（ctx 必須、effort > 5h > 7d の順で追加）
-MODEL_GROUP="${cyandim}[${reset} ${SEG2_CTX}"
-[ -n "$SEG2_EFFORT" ] && MODEL_GROUP="${MODEL_GROUP} ${cyandim}│${reset} ${SEG2_EFFORT}"
-MODEL_GROUP="${MODEL_GROUP} ${cyandim}]${reset}"
-LINE2="$MODEL_GROUP"
-LINE2_LEN=$(vlen "$MODEL_GROUP")
+# 優先順位順に1行で: ディレクトリ > ブランチ > ctx > モデル > エフォート
+LINE="${SEG_DIR}"
+[ -n "$SEG_BRANCH" ] && LINE="${LINE} ${SEG_BRANCH}"
+LINE="${LINE}  ${SEG2_MODEL}"
+[ -n "$SEG2_EFFORT" ] && LINE="${LINE} ${SEG2_EFFORT}"
+LINE="${LINE}  ${SEG2_CTX}"
 
 try_append2() {
   local seg="$1"
@@ -209,24 +195,7 @@ try_append2() {
     LINE2_LEN=$(( LINE2_LEN + need ))
   fi
 }
-# 使用量は [ 5h │ 7d │ F ] の1グループとして囲う
-USAGE_PARTS=()
-[ -n "$SEG2_5H" ] && USAGE_PARTS+=("$SEG2_5H")
-[ -n "$SEG2_7D" ] && USAGE_PARTS+=("$SEG2_7D")
-[ -n "$SEG2_FABLE" ] && USAGE_PARTS+=("$SEG2_FABLE")
-if [ ${#USAGE_PARTS[@]} -gt 0 ]; then
-  USAGE_BODY=""
-  for part in "${USAGE_PARTS[@]}"; do
-    [ -n "$USAGE_BODY" ] && USAGE_BODY="${USAGE_BODY} ${rosedim}│${reset} "
-    USAGE_BODY="${USAGE_BODY}${part}"
-  done
-  USAGE_SEG="${rosedim}[${reset} ${USAGE_BODY} ${rosedim}]${reset}"
-  useg_len=$(vlen "$USAGE_SEG")
-  if [ $(( LINE2_LEN + useg_len + 2 )) -le "$BUDGET" ]; then
-    LINE2="${LINE2}  ${USAGE_SEG}"
-    LINE2_LEN=$(( LINE2_LEN + useg_len + 2 ))
-  fi
-fi
+# 使用量（5h/7d/F）は tmux ステータスへ移したため statusline からは非表示
 
-echo -e "$LINE1"
-echo -e "$LINE2"
+echo -e "$LINE"
+exit 0

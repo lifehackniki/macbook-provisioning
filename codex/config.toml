@@ -28,7 +28,7 @@ fast_mode = true
 persistence = "save-all"
 
 [tui]
-status_line = ["model-with-reasoning", "used-tokens", "five-hour-limit", "weekly-limit", "current-dir"]
+status_line = ["model-with-reasoning", "used-tokens", "current-dir"]
 notifications = ["agent-turn-complete","approval-requested"]
 
 [tui.model_availability_nux]
@@ -68,4 +68,7 @@ trust_level = "trusted"
 trust_level = "trusted"
 
 [projects."/Users/lifehackniki/ghq/github.com/lifehackniki/macbook-provisioning"]
+trust_level = "trusted"
+
+[projects."/Users/lifehackniki"]
 trust_level = "trusted"
