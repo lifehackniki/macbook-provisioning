@@ -28,7 +28,8 @@ fast_mode = true
 persistence = "save-all"
 
 [tui]
-status_line = ["model-with-reasoning", "used-tokens", "current-dir"]
+# Claude Code の statusline と同じ並び: ディレクトリ > ブランチ > モデル+reasoning > ctx使用率
+status_line = ["current-dir", "git-branch", "model-with-reasoning", "context-used"]
 notifications = ["agent-turn-complete","approval-requested"]
 
 [tui.model_availability_nux]
