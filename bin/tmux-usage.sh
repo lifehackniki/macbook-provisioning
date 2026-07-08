@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
-#   claude[⏳NN% 📅NN% 🎯NN%]   Claude Code: ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
+#   claude[email@example.com ⏳NN% 📅NN% 🎯NN%]   Claude Code: アカウント / ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
 #   codex[⏳NN% 📅NN%]          Codex: ⏳5時間枠 / 📅週
 #
 # データ源:
@@ -10,15 +10,40 @@
 
 CACHE="${TMPDIR:-/tmp}/tmux-usage.cache"
 LOCK="${TMPDIR:-/tmp}/tmux-usage.lock"
-TTL=300        # キャッシュ有効秒数（この間隔でネットワーク更新＝実質のリフレッシュ間隔）
 LOCK_STALE=120 # ロックがこの秒数以上残っていたら異常終了とみなして除去（更新の空回り防止）
+TTL=60  # キャッシュ有効秒数
+
+claude_bin() {
+  if [ -x "$HOME/.local/bin/claude" ]; then
+    printf '%s\n' "$HOME/.local/bin/claude"
+  else
+    command -v claude 2>/dev/null
+  fi
+}
+
+claude_email() {
+  local cmd email
+  cmd=$(claude_bin) || return 0
+  email=$(CMUX_CLAUDE_HOOKS_DISABLED=1 "$cmd" auth status 2>/dev/null | jq -r '.email // empty' 2>/dev/null)
+  [ -n "$email" ] && printf '%s\n' "$email"
+}
 
 refresh() {
-  mkdir "$LOCK" 2>/dev/null || return          # 二重起動防止（mkdirはアトミック）
+  # 二重起動防止（mkdirはアトミック）。古いロックは異常終了の残骸として破棄する。
+  if ! mkdir "$LOCK" 2>/dev/null; then
+    local lock_mtime lock_age
+    lock_mtime=$(stat -f %m "$LOCK" 2>/dev/null || echo 0)
+    lock_age=$(( $(date +%s) - lock_mtime ))
+    if [ "$lock_age" -lt "$LOCK_TTL" ] || ! rmdir "$LOCK" 2>/dev/null; then
+      return
+    fi
+    mkdir "$LOCK" 2>/dev/null || return
+  fi
   trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
   # --- Claude Code ---
-  local cc="" tok j
+  local cc="" cc_email tok j
+  cc_email=$(claude_email)
   tok=$(jq -r '.claudeAiOauth.accessToken // empty' ~/.claude/.credentials.json 2>/dev/null)
   [ -z "$tok" ] && tok=$(security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null \
                           | jq -r '.claudeAiOauth.accessToken // empty' 2>/dev/null)
@@ -31,6 +56,13 @@ refresh() {
       def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
       "claude[⏳\(f(p("session"))) 📅\(f(p("weekly_all"))) 🎯\(f(p("weekly_scoped")))]"
     ' 2>/dev/null)
+  fi
+  if [ -n "$cc_email" ]; then
+    if [ -n "$cc" ]; then
+      cc="claude[$cc_email ${cc#claude[}"
+    else
+      cc="claude[$cc_email]"
+    fi
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
