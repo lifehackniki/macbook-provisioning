@@ -10,7 +10,8 @@
 
 CACHE="${TMPDIR:-/tmp}/tmux-usage.cache"
 LOCK="${TMPDIR:-/tmp}/tmux-usage.lock"
-TTL=60  # キャッシュ有効秒数
+TTL=300        # キャッシュ有効秒数（この間隔でネットワーク更新＝実質のリフレッシュ間隔）
+LOCK_STALE=120 # ロックがこの秒数以上残っていたら異常終了とみなして除去（更新の空回り防止）
 
 refresh() {
   mkdir "$LOCK" 2>/dev/null || return          # 二重起動防止（mkdirはアトミック）
@@ -50,6 +51,11 @@ refresh() {
   [ -n "$cx" ] && { [ -n "$out" ] && out+="  "; out+="$cx"; }
   [ -n "$out" ] && printf '%s' "$out" > "$CACHE"
 }
+
+# 前回の更新プロセスが異常終了してロックが残っていたら除去（放置すると更新が永久に空回りする）
+if [ -d "$LOCK" ] && [ "$(( $(date +%s) - $(stat -f %m "$LOCK" 2>/dev/null || echo 0) ))" -ge "$LOCK_STALE" ]; then
+  rmdir "$LOCK" 2>/dev/null
+fi
 
 # キャッシュが無い or 古ければ裏で更新（結果は次回描画で反映）
 if [ ! -f "$CACHE" ] || [ "$(( $(date +%s) - $(stat -f %m "$CACHE" 2>/dev/null || echo 0) ))" -ge "$TTL" ]; then
