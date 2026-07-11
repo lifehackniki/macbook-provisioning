@@ -9,9 +9,13 @@
 # ネットワーク/ログ走査は重いので、キャッシュ + バックグラウンド更新でステータス描画を止めない。
 
 CACHE="${TMPDIR:-/tmp}/tmux-usage.cache"
+CACHE_CC="${TMPDIR:-/tmp}/tmux-usage.claude"   # Claude の行だけを別に保持する（後述の理由）
+CACHE_CX="${TMPDIR:-/tmp}/tmux-usage.codex"
 LOCK="${TMPDIR:-/tmp}/tmux-usage.lock"
 LOCK_STALE=120 # ロックがこの秒数以上残っていたら異常終了とみなして除去（更新の空回り防止）
-TTL=60  # キャッシュ有効秒数
+# usage API はレート制限が厳しい。ペインの数だけ描画が走るので、間隔を詰めると 429 で
+# percent が取れなくなる。5分あければ実用上ほぼ当たらない。
+TTL=300
 
 claude_bin() {
   if [ -x "$HOME/.local/bin/claude" ]; then
@@ -34,7 +38,7 @@ refresh() {
     local lock_mtime lock_age
     lock_mtime=$(stat -f %m "$LOCK" 2>/dev/null || echo 0)
     lock_age=$(( $(date +%s) - lock_mtime ))
-    if [ "$lock_age" -lt "$LOCK_TTL" ] || ! rmdir "$LOCK" 2>/dev/null; then
+    if [ "$lock_age" -lt "$LOCK_STALE" ] || ! rmdir "$LOCK" 2>/dev/null; then
       return
     fi
     mkdir "$LOCK" 2>/dev/null || return
@@ -42,6 +46,8 @@ refresh() {
   trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
   # --- Claude Code ---
+  # percent が取れたときだけ CACHE_CC を書き換える。レート制限や失効トークンで API が
+  # error を返したときに「email だけの行」で上書きすると、次に成功するまで％が消えたままになる。
   local cc="" cc_email tok j
   cc_email=$(claude_email)
   tok=$(jq -r '.claudeAiOauth.accessToken // empty' ~/.claude/.credentials.json 2>/dev/null)
@@ -51,18 +57,23 @@ refresh() {
     j=$(curl -s --max-time 8 https://api.anthropic.com/api/oauth/usage \
           -H "Authorization: Bearer $tok" \
           -H "anthropic-beta: oauth-2025-04-20" 2>/dev/null)
+    # limits[] が本命。旧レスポンス互換で five_hour/seven_day にもフォールバックする。
     cc=$(printf '%s' "$j" | jq -r '
-      def p(k): ([.limits[] | select(.kind==k) | .percent] | first) // null;
-      def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
-      "claude[⏳\(f(p("session"))) 📅\(f(p("weekly_all"))) 🎯\(f(p("weekly_scoped")))]"
+      if (.error != null) then empty else
+        def p(k): ([.limits[]? | select(.kind==k) | .percent] | first);
+        def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
+        (p("session")     // .five_hour.utilization) as $s |
+        (p("weekly_all")  // .seven_day.utilization) as $w |
+        p("weekly_scoped") as $g |
+        if ($s == null and $w == null and $g == null) then empty else
+          "claude[⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))]"
+        end
+      end
     ' 2>/dev/null)
   fi
-  if [ -n "$cc_email" ]; then
-    if [ -n "$cc" ]; then
-      cc="claude[$cc_email ${cc#claude[}"
-    else
-      cc="claude[$cc_email]"
-    fi
+  if [ -n "$cc" ]; then
+    [ -n "$cc_email" ] && cc="claude[$cc_email ${cc#claude[}"
+    printf '%s' "$cc" > "$CACHE_CC"
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
@@ -76,11 +87,16 @@ refresh() {
       def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
       "codex[⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))]"
     ' 2>/dev/null)
+    [ -n "$cx" ] && printf '%s' "$cx" > "$CACHE_CX"
   fi
 
+  # 表示行は「今ある分」を組み立てる（片方の取得に失敗しても、もう片方は前回値で残る）
   local out=""
-  [ -n "$cc" ] && out="$cc"
-  [ -n "$cx" ] && { [ -n "$out" ] && out+="  "; out+="$cx"; }
+  [ -f "$CACHE_CC" ] && out=$(cat "$CACHE_CC")
+  if [ -f "$CACHE_CX" ]; then
+    [ -n "$out" ] && out+="  "
+    out+=$(cat "$CACHE_CX")
+  fi
   [ -n "$out" ] && printf '%s' "$out" > "$CACHE"
 }
 
