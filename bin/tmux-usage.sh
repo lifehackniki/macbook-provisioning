@@ -34,7 +34,7 @@ refresh() {
     local lock_mtime lock_age
     lock_mtime=$(stat -f %m "$LOCK" 2>/dev/null || echo 0)
     lock_age=$(( $(date +%s) - lock_mtime ))
-    if [ "$lock_age" -lt "$LOCK_TTL" ] || ! rmdir "$LOCK" 2>/dev/null; then
+    if [ "$lock_age" -lt "$LOCK_STALE" ] || ! rmdir "$LOCK" 2>/dev/null; then
       return
     fi
     mkdir "$LOCK" 2>/dev/null || return
@@ -57,12 +57,12 @@ refresh() {
       "claude[⏳\(f(p("session"))) 📅\(f(p("weekly_all"))) 🎯\(f(p("weekly_scoped")))]"
     ' 2>/dev/null)
   fi
-  if [ -n "$cc_email" ]; then
-    if [ -n "$cc" ]; then
-      cc="claude[$cc_email ${cc#claude[}"
-    else
-      cc="claude[$cc_email]"
-    fi
+  if [ -n "$cc" ]; then
+    [ -n "$cc_email" ] && cc="claude[$cc_email ${cc#claude[}"
+  else
+    # usage APIは429を頻繁に返す。失敗時は前回キャッシュのclaude部分を使い回し、％表示を消さない
+    cc=$(grep -o 'claude\[[^]]*\]' "$CACHE" 2>/dev/null | head -1)
+    [ -z "$cc" ] && [ -n "$cc_email" ] && cc="claude[$cc_email]"
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
