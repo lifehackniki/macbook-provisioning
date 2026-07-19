@@ -1,9 +1,9 @@
 PWD := $(shell pwd)
 HOSTNAME := $(shell hostname -s)
 
-.PHONY: link unlink link/home link/config copy/claude setup package/install package/cleanup package/check package/dump yazi/install npm/install bettertouchtool/export bettertouchtool/import
+.PHONY: link unlink link/home link/config setup package/install package/cleanup package/check package/dump yazi/install npm/install bettertouchtool/export bettertouchtool/import
 
-link: link/home link/config copy/claude
+link: link/home link/config
 
 link/home:
 	ln -Fs $(PWD)/zsh/zshrc $(HOME)/.zshrc
@@ -15,8 +15,6 @@ link/home:
 	ln -Fs $(PWD)/tmux/tmux.conf $(HOME)/.tmux.conf
 
 link/config:
-	mkdir -p $(HOME)/.codex
-	ln -Fs $(PWD)/codex/config.toml $(HOME)/.codex/config.toml
 	mkdir -p $(HOME)/.config/ghostty
 	ln -Fs $(PWD)/ghostty/config $(HOME)/.config/ghostty/config
 	mkdir -p $(HOME)/.config/borders
@@ -33,10 +31,6 @@ link/config:
 	mkdir -p $(HOME)/.config/lazygit
 	ln -Fs $(PWD)/lazygit/config.yml $(HOME)/.config/lazygit/config.yml
 
-copy/claude:
-	mkdir -p $(HOME)/.claude
-	rsync -a --delete --exclude='skills/' --exclude='projects/' --exclude='memory/' --exclude='teams/' --exclude='tasks/' --exclude='todos/' --exclude='.credentials' --exclude='statsig/' $(PWD)/claude/ $(HOME)/.claude/
-
 unlink:
 	rm -f $(HOME)/.zshrc $(HOME)/.gitconfig $(HOME)/.vimrc
 	rm -f $(HOME)/bin/takt
@@ -46,9 +40,6 @@ unlink:
 	rm -f $(HOME)/.config/karabiner/karabiner.json
 	rm -f $(HOME)/.config/peco/config.json
 	rm -rf $(HOME)/.config/yazi
-	rm -f $(HOME)/.codex/config.toml
-	rm -f $(HOME)/.claude/CLAUDE.md $(HOME)/.claude/settings.json $(HOME)/.claude/statusline.sh $(HOME)/.claude/notify.sh
-	rm -rf $(HOME)/.claude/agents
 
 setup:
 	/bin/bash -c "$$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
