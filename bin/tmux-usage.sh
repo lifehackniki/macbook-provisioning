@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
-#   claude[email@example.com ⏳NN% 📅NN% 🎯NN%]   Claude Code: アカウント / ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
-#   codex[⏳NN% 📅NN%]          Codex: ⏳5時間枠 / 📅週
+#   ✳[account 5h:NN% 週:NN% 枠:NN%]   Claude Code(✳): アカウント(@前のみ) / 5時間枠 / 週(全体) / 週(スコープ上限)
+#   ⬢[5h:NN% 週:NN%]                  Codex(⬢): 5時間枠 / 週
+# ％はしきい値で色分けする（〜49%緑 / 50〜79%黄 / 80%〜赤・太字）。tmuxの #[] スタイルを直接出力する。
 #
 # データ源:
 #   Claude … OAuth usage API (api.anthropic.com/api/oauth/usage) が各上限の percent を返す
@@ -13,9 +14,9 @@ CACHE_CC="${TMPDIR:-/tmp}/tmux-usage.claude"   # Claude の行だけを別に保
 CACHE_CX="${TMPDIR:-/tmp}/tmux-usage.codex"
 LOCK="${TMPDIR:-/tmp}/tmux-usage.lock"
 LOCK_STALE=120 # ロックがこの秒数以上残っていたら異常終了とみなして除去（更新の空回り防止）
-# usage API はレート制限が厳しい。ペインの数だけ描画が走るので、間隔を詰めると 429 で
-# percent が取れなくなる。5分あければ実用上ほぼ当たらない。
-TTL=300
+# usage API はレート制限が厳しいが、更新はロック＋共有キャッシュで全ペイン合わせて
+# 1プロセスに束ねてあるため、60秒でもリクエストは最大1回/分に収まり実用上429には当たらない。
+TTL=60
 
 claude_bin() {
   if [ -x "$HOME/.local/bin/claude" ]; then
@@ -61,18 +62,23 @@ refresh() {
     cc=$(printf '%s' "$j" | jq -r '
       if (.error != null) then empty else
         def p(k): ([.limits[]? | select(.kind==k) | .percent] | first);
-        def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
+        def f(v): if v==null then "#[fg=#6c7086]-"
+          else ((v|round) as $n |
+            (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af]" else "#[fg=#a6e3a1]" end)
+            + ($n|tostring) + "%#[nobold]") end;
+        def l(k): "#[fg=#6c7086]" + k + ":";
         (p("session")     // .five_hour.utilization) as $s |
         (p("weekly_all")  // .seven_day.utilization) as $w |
         p("weekly_scoped") as $g |
         if ($s == null and $w == null and $g == null) then empty else
-          "claude[⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))]"
+          "✳[\(l("5h"))\(f($s)) \(l("週"))\(f($w)) \(l("枠"))\(f($g))#[fg=#a6e3a1]]"
         end
       end
     ' 2>/dev/null)
   fi
   if [ -n "$cc" ]; then
-    [ -n "$cc_email" ] && cc="claude[$cc_email ${cc#claude[}"
+    # メールは@より前だけ表示して行を短くする（アカウント判別には十分）
+    [ -n "$cc_email" ] && cc="✳[${cc_email%%@*} ${cc#✳[}"
     printf '%s' "$cc" > "$CACHE_CC"
   fi
 
@@ -84,8 +90,12 @@ refresh() {
   if [ -n "$line" ] && [ "$line" != "null" ]; then
     cx=$(printf '%s' "$line" | jq -r '
       .payload.rate_limits as $r |
-      def f(v): if v==null then "-" else (v|round|tostring)+"%" end;
-      "codex[⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))]"
+      def f(v): if v==null then "#[fg=#6c7086]-"
+        else ((v|round) as $n |
+          (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af]" else "#[fg=#a6e3a1]" end)
+          + ($n|tostring) + "%#[nobold]") end;
+      def l(k): "#[fg=#6c7086]" + k + ":";
+      "⬢[\(l("5h"))\(f($r.primary.used_percent)) \(l("週"))\(f($r.secondary.used_percent))#[fg=#a6e3a1]]"
     ' 2>/dev/null)
     [ -n "$cx" ] && printf '%s' "$cx" > "$CACHE_CX"
   fi
@@ -98,6 +108,13 @@ refresh() {
     out+=$(cat "$CACHE_CX")
   fi
   [ -n "$out" ] && printf '%s' "$out" > "$CACHE"
+
+  # 更新が終わったら描画を促す（次のstatus-intervalを待たずに新しい値を反映させる）
+  if command -v tmux >/dev/null 2>&1; then
+    tmux list-clients -F '#{client_name}' 2>/dev/null | while read -r c; do
+      tmux refresh-client -t "$c" 2>/dev/null
+    done
+  fi
 }
 
 # 前回の更新プロセスが異常終了してロックが残っていたら除去（放置すると更新が永久に空回りする）
