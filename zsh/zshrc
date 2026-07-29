@@ -186,11 +186,22 @@ pcr() { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_claude_r" }
 px()  { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_codex"    }
 pxr() { local d=$(_pick); [ -n "$d" ] && cd "$d" && eval "$_codex_r"  }
 
-_kj() { cd "$HOME/ghq/github.com/co-cre/kajinuma-os" }
-kc()  { _kj && eval "$_claude"   }
-kcr() { _kj && eval "$_claude_r" }
-kx()  { _kj && eval "$_codex"    }
-kxr() { _kj && eval "$_codex_r"  }
+# tmux セッションを peco で選んでアタッチ
+function ta() {
+    local session=$(tmux ls 2>/dev/null | peco --query "$1" | cut -d: -f1)
+    [ -z "$session" ] && return
+    if [ -n "$TMUX" ]; then
+        tmux switch-client -t "$session"
+    else
+        tmux attach -t "$session"
+    fi
+}
+
+_kt() { cd "$HOME/ghq/github.com/co-cre/kotodama" }
+kc()  { _kt && eval "$_claude"   }
+kcr() { _kt && eval "$_claude_r" }
+kx()  { _kt && eval "$_codex"    }
+kxr() { _kt && eval "$_codex_r"  }
 alias k=kc
 
 # -------------------------------------
