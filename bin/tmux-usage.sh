@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
-#   ✳[account 5h:NN% 週:NN% 枠:NN%]   Claude Code(✳): アカウント(@前のみ) / 5時間枠 / 週(全体) / 週(スコープ上限)
-#   ⬢[5h:NN% 週:NN%]                  Codex(⬢): 5時間枠 / 週
-# ％はしきい値で色分けする（〜49%緑 / 50〜79%黄 / 80%〜赤・太字）。tmuxの #[] スタイルを直接出力する。
+#   ✳[account ⏳NN% 📅NN% 🎯NN%]   Claude Code(✳ 橙): アカウント(@前のみ) / ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
+#   ⬢[⏳NN% 📅NN%]                 Codex(⬢ 青): ⏳5時間枠 / 📅週
+# ％は常に太字＋しきい値で色分け（〜49%緑 / 50〜79%黄 / 80%〜赤）。記号と[]はツール色で塗り分ける。
+# tmuxの #[] スタイルを直接出力する。
 #
 # データ源:
 #   Claude … OAuth usage API (api.anthropic.com/api/oauth/usage) が各上限の percent を返す
@@ -64,14 +65,13 @@ refresh() {
         def p(k): ([.limits[]? | select(.kind==k) | .percent] | first);
         def f(v): if v==null then "#[fg=#6c7086]-"
           else ((v|round) as $n |
-            (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af]" else "#[fg=#a6e3a1]" end)
+            (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af,bold]" else "#[fg=#a6e3a1,bold]" end)
             + ($n|tostring) + "%#[nobold]") end;
-        def l(k): "#[fg=#6c7086]" + k + ":";
         (p("session")     // .five_hour.utilization) as $s |
         (p("weekly_all")  // .seven_day.utilization) as $w |
         p("weekly_scoped") as $g |
         if ($s == null and $w == null and $g == null) then empty else
-          "✳[\(l("5h"))\(f($s)) \(l("週"))\(f($w)) \(l("枠"))\(f($g))#[fg=#a6e3a1]]"
+          "✳[⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))#[fg=#fab387]]"
         end
       end
     ' 2>/dev/null)
@@ -79,7 +79,8 @@ refresh() {
   if [ -n "$cc" ]; then
     # メールは@より前だけ表示して行を短くする（アカウント判別には十分）
     [ -n "$cc_email" ] && cc="✳[${cc_email%%@*} ${cc#✳[}"
-    printf '%s' "$cc" > "$CACHE_CC"
+    # 記号・[]・アカウント名をClaude色（橙）で塗る
+    printf '%s' "#[fg=#fab387]$cc" > "$CACHE_CC"
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
@@ -92,10 +93,9 @@ refresh() {
       .payload.rate_limits as $r |
       def f(v): if v==null then "#[fg=#6c7086]-"
         else ((v|round) as $n |
-          (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af]" else "#[fg=#a6e3a1]" end)
+          (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af,bold]" else "#[fg=#a6e3a1,bold]" end)
           + ($n|tostring) + "%#[nobold]") end;
-      def l(k): "#[fg=#6c7086]" + k + ":";
-      "⬢[\(l("5h"))\(f($r.primary.used_percent)) \(l("週"))\(f($r.secondary.used_percent))#[fg=#a6e3a1]]"
+      "#[fg=#89b4fa]⬢[⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))#[fg=#89b4fa]]"
     ' 2>/dev/null)
     [ -n "$cx" ] && printf '%s' "$cx" > "$CACHE_CX"
   fi
