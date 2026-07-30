@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
-#   ✳[account ⏳NN% 📅NN% 🎯NN%]   Claude Code(✳): アカウント(@前のみ) / ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
-#   ⬢[⏳NN% 📅NN%]                 Codex(⬢): ⏳5時間枠 / 📅週
-# 記号・[]・アカウント名は白。％数字だけをツール色（Claude橙 / Codex青）＋太字にして、
-# 数字の色でどちらのツールかが分かるようにする。tmuxの #[] スタイルを直接出力する。
+#   🟠[⏳NN% 📅NN% 🎯NN% account]   Claude Code(🟠): ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限) / アカウント(@前のみ)
+#   🔵[⏳NN% 📅NN% account]         Codex(🔵): ⏳5時間枠 / 📅週 / アカウント(@前のみ)
+# 記号は文字に見えない色付き絵文字（数字色と対応）。[]・アカウント名は白。
+# ％数字だけをツール色（Claude橙 / Codex青）＋太字にして、数字の色でどちらのツールかが分かるようにする。
+# tmuxの #[] スタイルを直接出力する。
 #
 # データ源:
 #   Claude … OAuth usage API (api.anthropic.com/api/oauth/usage) が各上限の percent を返す
@@ -32,6 +33,15 @@ claude_email() {
   cmd=$(claude_bin) || return 0
   email=$(CMUX_CLAUDE_HOOKS_DISABLED=1 "$cmd" auth status 2>/dev/null | jq -r '.email // empty' 2>/dev/null)
   [ -n "$email" ] && printf '%s\n' "$email"
+}
+
+# Codex のアカウント識別子: ~/.codex/auth.json の id_token(JWT) の email クレームから取る
+codex_email() {
+  local p
+  p=$(jq -r '.tokens.id_token // empty' ~/.codex/auth.json 2>/dev/null | cut -d. -f2 | tr '_-' '/+')
+  [ -z "$p" ] && return 0
+  case $(( ${#p} % 4 )) in 2) p="${p}==" ;; 3) p="${p}=" ;; esac
+  printf '%s' "$p" | base64 -D 2>/dev/null | jq -r '.email // empty' 2>/dev/null
 }
 
 refresh() {
@@ -70,20 +80,20 @@ refresh() {
         (p("weekly_all")  // .seven_day.utilization) as $w |
         p("weekly_scoped") as $g |
         if ($s == null and $w == null and $g == null) then empty else
-          "✳[⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))]"
+          "⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))"
         end
       end
     ' 2>/dev/null)
   fi
   if [ -n "$cc" ]; then
-    # メールは@より前だけ表示して行を短くする（アカウント判別には十分）
-    [ -n "$cc_email" ] && cc="✳[${cc_email%%@*} ${cc#✳[}"
+    # メールは@より前だけ末尾に表示して行を短くする（アカウント判別には十分）
     # 記号・[]・アカウント名は白。ツールの区別は％数字の色（橙）で付く
-    printf '%s' "#[fg=#cdd6f4]$cc" > "$CACHE_CC"
+    printf '%s' "#[fg=#cdd6f4]🟠[${cc}${cc_email:+ ${cc_email%%@*}}]" > "$CACHE_CC"
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
-  local cx="" line
+  local cx="" cx_email line
+  cx_email=$(codex_email)
   line=$(for fp in $(ls -t ~/.codex/sessions/*/*/*/*.jsonl 2>/dev/null | head -12); do
            grep -h "rate_limits" "$fp" 2>/dev/null | tail -1
          done | jq -s 'map(select(.payload.rate_limits)) | sort_by(.timestamp) | last' 2>/dev/null)
@@ -93,9 +103,9 @@ refresh() {
       def f(v): if v==null then "#[fg=#6c7086]-#[fg=#cdd6f4]"
         else ((v|round) as $n |
           "#[fg=#89b4fa,bold]" + ($n|tostring) + "%#[fg=#cdd6f4,nobold]") end;
-      "#[fg=#cdd6f4]⬢[⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))]"
+      "⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))"
     ' 2>/dev/null)
-    [ -n "$cx" ] && printf '%s' "$cx" > "$CACHE_CX"
+    [ -n "$cx" ] && printf '%s' "#[fg=#cdd6f4]🔵[${cx}${cx_email:+ ${cx_email%%@*}}]" > "$CACHE_CX"
   fi
 
   # 表示行は「今ある分」を組み立てる（片方の取得に失敗しても、もう片方は前回値で残る）
