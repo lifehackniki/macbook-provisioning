@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
 #   🟠[⏳NN% 📅NN% 🎯NN% account]   Claude Code(🟠): ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限) / アカウント(@前のみ)
-#   🔵[⏳NN% 📅NN% account]         Codex(🔵): ⏳5時間枠 / 📅週 / アカウント(@前のみ)
+#   🔵[⏳NN% 📅NN%]                 Codex(🔵): ⏳5時間枠 / 📅週（1アカウント運用のためアカウント表示なし）
 # 記号は文字に見えない色付き絵文字（数字色と対応）。[]・アカウント名は白。
 # ％数字だけをツール色（Claude橙 / Codex青）＋太字にして、数字の色でどちらのツールかが分かるようにする。
 # tmuxの #[] スタイルを直接出力する。
@@ -34,16 +34,6 @@ claude_email() {
   email=$(CMUX_CLAUDE_HOOKS_DISABLED=1 "$cmd" auth status 2>/dev/null | jq -r '.email // empty' 2>/dev/null)
   [ -n "$email" ] && printf '%s\n' "$email"
 }
-
-# Codex のアカウント識別子: ~/.codex/auth.json の id_token(JWT) の email クレームから取る
-codex_email() {
-  local p
-  p=$(jq -r '.tokens.id_token // empty' ~/.codex/auth.json 2>/dev/null | cut -d. -f2 | tr '_-' '/+')
-  [ -z "$p" ] && return 0
-  case $(( ${#p} % 4 )) in 2) p="${p}==" ;; 3) p="${p}=" ;; esac
-  printf '%s' "$p" | base64 -D 2>/dev/null | jq -r '.email // empty' 2>/dev/null
-}
-
 refresh() {
   # 二重起動防止（mkdirはアトミック）。古いロックは異常終了の残骸として破棄する。
   if ! mkdir "$LOCK" 2>/dev/null; then
@@ -92,8 +82,7 @@ refresh() {
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
-  local cx="" cx_email line
-  cx_email=$(codex_email)
+  local cx="" line
   line=$(for fp in $(ls -t ~/.codex/sessions/*/*/*/*.jsonl 2>/dev/null | head -12); do
            grep -h "rate_limits" "$fp" 2>/dev/null | tail -1
          done | jq -s 'map(select(.payload.rate_limits)) | sort_by(.timestamp) | last' 2>/dev/null)
@@ -105,7 +94,7 @@ refresh() {
           "#[fg=#89b4fa,bold]" + ($n|tostring) + "%#[fg=#cdd6f4,nobold]") end;
       "⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))"
     ' 2>/dev/null)
-    [ -n "$cx" ] && printf '%s' "#[fg=#cdd6f4]🔵[${cx}${cx_email:+ ${cx_email%%@*}}]" > "$CACHE_CX"
+    [ -n "$cx" ] && printf '%s' "#[fg=#cdd6f4]🔵[${cx}]" > "$CACHE_CX"
   fi
 
   # 表示行は「今ある分」を組み立てる（片方の取得に失敗しても、もう片方は前回値で残る）
