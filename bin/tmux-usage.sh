@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # Claude Code / Codex の「使用量（レート上限に対する％）」を tmux ステータス用に1行で出力する。
-#   ✳[account ⏳NN% 📅NN% 🎯NN%]   Claude Code(✳ 橙): アカウント(@前のみ) / ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限)
-#   ⬢[⏳NN% 📅NN%]                 Codex(⬢ 青): ⏳5時間枠 / 📅週
-# ％は常に太字＋しきい値で色分け（〜49%緑 / 50〜79%黄 / 80%〜赤）。記号と[]はツール色で塗り分ける。
+#   🟠[⏳NN% 📅NN% 🎯NN% account]   Claude Code(🟠): ⏳5時間枠 / 📅週(全体) / 🎯週(スコープ上限) / アカウント(@前のみ)
+#   🔵[⏳NN% 📅NN%]                 Codex(🔵): ⏳5時間枠 / 📅週（1アカウント運用のためアカウント表示なし）
+# 記号は文字に見えない色付き絵文字（数字色と対応）。[]・アカウント名は白。
+# ％数字だけをツール色（Claude橙 / Codex青）＋太字にして、数字の色でどちらのツールかが分かるようにする。
 # tmuxの #[] スタイルを直接出力する。
 #
 # データ源:
@@ -33,7 +34,6 @@ claude_email() {
   email=$(CMUX_CLAUDE_HOOKS_DISABLED=1 "$cmd" auth status 2>/dev/null | jq -r '.email // empty' 2>/dev/null)
   [ -n "$email" ] && printf '%s\n' "$email"
 }
-
 refresh() {
   # 二重起動防止（mkdirはアトミック）。古いロックは異常終了の残骸として破棄する。
   if ! mkdir "$LOCK" 2>/dev/null; then
@@ -63,24 +63,22 @@ refresh() {
     cc=$(printf '%s' "$j" | jq -r '
       if (.error != null) then empty else
         def p(k): ([.limits[]? | select(.kind==k) | .percent] | first);
-        def f(v): if v==null then "#[fg=#6c7086]-"
+        def f(v): if v==null then "#[fg=#6c7086]-#[fg=#cdd6f4]"
           else ((v|round) as $n |
-            (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af,bold]" else "#[fg=#a6e3a1,bold]" end)
-            + ($n|tostring) + "%#[nobold]") end;
+            "#[fg=#fab387,bold]" + ($n|tostring) + "%#[fg=#cdd6f4,nobold]") end;
         (p("session")     // .five_hour.utilization) as $s |
         (p("weekly_all")  // .seven_day.utilization) as $w |
         p("weekly_scoped") as $g |
         if ($s == null and $w == null and $g == null) then empty else
-          "✳[⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))#[fg=#fab387]]"
+          "⏳\(f($s)) 📅\(f($w)) 🎯\(f($g))"
         end
       end
     ' 2>/dev/null)
   fi
   if [ -n "$cc" ]; then
-    # メールは@より前だけ表示して行を短くする（アカウント判別には十分）
-    [ -n "$cc_email" ] && cc="✳[${cc_email%%@*} ${cc#✳[}"
-    # 記号・[]・アカウント名をClaude色（橙）で塗る
-    printf '%s' "#[fg=#fab387]$cc" > "$CACHE_CC"
+    # メールは@より前だけ末尾に表示して行を短くする（アカウント判別には十分）
+    # 記号・[]・アカウント名は白。ツールの区別は％数字の色（橙）で付く
+    printf '%s' "#[fg=#cdd6f4]🟠[${cc}${cc_email:+ ${cc_email%%@*}}]" > "$CACHE_CC"
   fi
 
   # --- Codex ---（複数セッションから最も新しい rate_limits を採用）
@@ -91,13 +89,12 @@ refresh() {
   if [ -n "$line" ] && [ "$line" != "null" ]; then
     cx=$(printf '%s' "$line" | jq -r '
       .payload.rate_limits as $r |
-      def f(v): if v==null then "#[fg=#6c7086]-"
+      def f(v): if v==null then "#[fg=#6c7086]-#[fg=#cdd6f4]"
         else ((v|round) as $n |
-          (if $n>=80 then "#[fg=#f38ba8,bold]" elif $n>=50 then "#[fg=#f9e2af,bold]" else "#[fg=#a6e3a1,bold]" end)
-          + ($n|tostring) + "%#[nobold]") end;
-      "#[fg=#89b4fa]⬢[⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))#[fg=#89b4fa]]"
+          "#[fg=#89b4fa,bold]" + ($n|tostring) + "%#[fg=#cdd6f4,nobold]") end;
+      "⏳\(f($r.primary.used_percent)) 📅\(f($r.secondary.used_percent))"
     ' 2>/dev/null)
-    [ -n "$cx" ] && printf '%s' "$cx" > "$CACHE_CX"
+    [ -n "$cx" ] && printf '%s' "#[fg=#cdd6f4]🔵[${cx}]" > "$CACHE_CX"
   fi
 
   # 表示行は「今ある分」を組み立てる（片方の取得に失敗しても、もう片方は前回値で残る）
